@@ -1,0 +1,11 @@
+[1mInitial chunk files[22m  [2m | [22m[1mNames[22m        [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mmain-NCDN3TR6.js[39m     [2m | [22m[2mmain[22m         [2m | [22m[36m272.75 kB[39m[2m | [22m               [36m71.20 kB[39m
+[32mpolyfills-5CFQRCPP.js[39m[2m | [22m[2mpolyfills[22m    [2m | [22m [36m34.59 kB[39m[2m | [22m               [36m11.33 kB[39m
+[32mstyles-36MNGD7Q.css[39m  [2m | [22m[2mstyles[22m       [2m | [22m [36m14.38 kB[39m[2m | [22m                [36m1.24 kB[39m
+
+[1m [22m                    [2m | [22m[1mInitial total[22m[2m | [22m[1m321.72 kB[22m[2m | [22m               [1m83.77 kB[22m
+
+Application bundle generation complete. [7.607 seconds] - 2026-08-01T18:21:09.336Z
+
+Output location: c:\Users\PC\Downloads\estateos-frontend\dist\estateos-frontend
+

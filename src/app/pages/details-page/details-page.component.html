@@ -1,0 +1,254 @@
+<section class="details-shell">
+  <div class="container details-layout">
+    @if (property()) {
+      <article class="details-card">
+        <div class="eyebrow">{{ property()!.category }} Listing</div>
+        <div class="header-title-flex">
+          <h1>{{ property()!.name }}</h1>
+          <button 
+            type="button" 
+            class="save-detail-btn" 
+            [class.saved]="isSaved(property()!._id)" 
+            (click)="toggleSaveProperty($event, property()!._id)">
+            {{ isSaved(property()!._id) ? '❤️ Bookmarked' : '🤍 Bookmark Property' }}
+          </button>
+        </div>
+        <div class="location-price-bar">
+          <p class="location-marker">📍 {{ property()!.location }}</p>
+          <p class="price-value">{{ property()!.price }}</p>
+        </div>
+        
+        <!-- Primary Showcase Image -->
+        <div class="primary-showcase" (click)="galleryPreviewImage.set(property()!.image)">
+          <img [src]="property()!.image" [alt]="property()!.name" />
+          <div class="zoom-overlay">🔍 Click to zoom</div>
+        </div>
+
+        <p class="lead-description">{{ property()!.description }}</p>
+        
+        <!-- Gallery Grid -->
+        <div class="gallery-section">
+          <h3>Property Showcase Gallery</h3>
+          <div class="gallery-grid">
+            @for (image of property()!.gallery; track image) {
+              <div class="gallery-thumb" (click)="galleryPreviewImage.set(image)">
+                <img [src]="image" [alt]="property()!.name" loading="lazy" />
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Specs Highlights -->
+        <div class="specs-row">
+          <div class="spec-box">
+            <strong>Size / Area</strong>
+            <span>{{ property()!.area }}</span>
+          </div>
+          <div class="spec-box">
+            <strong>Property Type</strong>
+            <span>{{ property()!.type }}</span>
+          </div>
+          <div class="spec-box">
+            <strong>Category</strong>
+            <span>{{ property()!.category }}</span>
+          </div>
+        </div>
+
+        <!-- Amenities Section -->
+        <div class="details-section">
+          <h3>Exclusive Club Amenities</h3>
+          <div class="amenities-grid">
+            @for (item of property()!.amenities; track item) {
+              <div class="amenity-item">
+                <span class="marker-icon">✦</span>
+                <span>{{ item }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Floor Plans Section with Switcher -->
+        <div class="details-section">
+          <h3>Floor Plan Architectures</h3>
+          <div class="floorplan-switcher">
+            <div class="floorplan-tabs">
+              @for (plan of property()!.floorPlans; track plan; let i = $index) {
+                <button
+                  type="button"
+                  class="tab-btn"
+                  [class.active]="activeFloorPlanIndex() === i"
+                  (click)="activeFloorPlanIndex.set(i)"
+                >
+                  Plan Option {{ i + 1 }}
+                </button>
+              }
+            </div>
+            <div class="floorplan-content glass-card">
+              <h4>{{ property()!.floorPlans[activeFloorPlanIndex()] }}</h4>
+              <p>Standard architectural blueprint with luxury specifications, matching current floor parameters.</p>
+              <div class="blueprint-placeholder">
+                <span class="blueprint-grid"></span>
+                <span class="blueprint-text">Architectural Layout Schematic</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Mortgage Calculator -->
+        <div class="details-section mortgage-calculator-box glass-card">
+          <h3>Mortgage & EMI Estimator</h3>
+          <p>Compute your monthly payments dynamically based on interest rates and loan tenures.</p>
+          <div class="calculator-grid">
+            <div class="calc-inputs">
+              <label>
+                <span>Property Value (₹)</span>
+                <input type="number" [(ngModel)]="priceInput" name="calcPrice" />
+              </label>
+              <label>
+                <span>Down Payment (₹)</span>
+                <input type="number" [(ngModel)]="downPaymentInput" name="calcDown" />
+              </label>
+              <div class="calc-row">
+                <label>
+                  <span>Interest Rate (%)</span>
+                  <input type="number" step="0.1" [(ngModel)]="interestRateInput" name="calcInterest" />
+                </label>
+                <label>
+                  <span>Duration (Years)</span>
+                  <input type="number" [(ngModel)]="tenureInput" name="calcTenure" />
+                </label>
+              </div>
+            </div>
+            <div class="calc-outputs">
+              <div class="output-card">
+                <span>Calculated Loan Amount</span>
+                <strong>₹{{ loanAmount() | number }}</strong>
+              </div>
+              <div class="output-card highlighted">
+                <span>Estimated Monthly EMI</span>
+                <strong>₹{{ monthlyEmi() | number }} / mo</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Neighborhood Maps integration -->
+        <div class="details-section">
+          <h3>Neighborhood Infrastructure</h3>
+          <p>Check the distance matrix to key metro stations, airports, and business parks.</p>
+          <div class="map-placeholder-wrapper">
+            <iframe
+              [src]="mapUrl()"
+              width="100%"
+              height="300"
+              style="border:0; border-radius: 12px; filter: grayscale(1) invert(0.9) contrast(1.2);"
+              allowfullscreen=""
+              loading="lazy">
+            </iframe>
+          </div>
+          <div class="nearby-grid">
+            @for (place of property()!.nearbyPlaces; track place) {
+              <div class="nearby-item">
+                <span>📍 {{ place }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="quick-whatsapp-call">
+          <a class="btn btn-primary" href="https://wa.me/919095392629" target="_blank" rel="noopener noreferrer" style="width: 100%; display: flex; align-items: center; justify-content: center;">
+            <img src="/whatsapp-logo.png" alt="WhatsApp" style="width: 20px; height: 20px; border-radius: 50%; margin-right: 8px;" />
+            WhatsApp Inquiry
+          </a>
+        </div>
+      </article>
+    } @else {
+      <article class="details-card">
+        <div class="eyebrow">Vimahamur Luxury Property</div>
+        <h1>Property or project not found.</h1>
+        <p>Please check the listings or try navigating back to the inventory catalogue.</p>
+        <a routerLink="/properties" class="btn btn-primary">Back to Listings</a>
+      </article>
+    }
+
+    <!-- SIDEBAR TOUR BOOKING WIDGET -->
+    <aside class="sidebar-card-wrapper">
+      <div class="sidebar-card glass-card">
+        <h3>Book Site Walkthrough</h3>
+        <p>Schedule a private guided tour of this signature property with a portfolio counselor.</p>
+        
+        <form class="lead-form" (ngSubmit)="submitSiteVisit()">
+          <label><span>Name</span><input type="text" [(ngModel)]="visit.name" name="visitName" placeholder="Full Name" required /></label>
+          <label><span>Phone</span><input type="tel" [(ngModel)]="visit.phone" name="visitPhone" placeholder="+91 90953 92629" required /></label>
+          <label><span>Preferred Date</span><input type="date" [(ngModel)]="visit.date" name="visitDate" required /></label>
+          <label>
+            <span>Preferred Time Slot</span>
+            <select [(ngModel)]="visit.time" name="visitTime" required>
+              <option>10:00 AM</option>
+              <option>12:00 PM</option>
+              <option>02:00 PM</option>
+              <option>04:00 PM</option>
+              <option>06:00 PM</option>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="btn-spinner"></span> Booking Tour...
+            } @else {
+              Request Private Tour
+            }
+          </button>
+        </form>
+        @if (showVisitConfirmation()) {
+          <div class="sidebar-toast">✅ Tour scheduled! Relationship manager will contact you in 5 minutes.</div>
+        }
+      </div>
+
+      <div class="sidebar-card glass-card">
+        <h3>Quick Enquiry Desk</h3>
+        <form class="lead-form" (ngSubmit)="submitEnquiry()">
+          <label><span>Name</span><input type="text" [(ngModel)]="enquiry.name" name="enqName" required /></label>
+          <label><span>Phone</span><input type="tel" [(ngModel)]="enquiry.phone" name="enqPhone" required /></label>
+          <label><span>Email Address</span><input type="email" [(ngModel)]="enquiry.email" name="enqEmail" required /></label>
+          <label class="full-span"><span>Enquiry Message</span><textarea rows="4" [(ngModel)]="enquiry.message" name="enqMessage" placeholder="Ask about down payment schedules or structural layouts..."></textarea></label>
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+              <span class="btn-spinner"></span> Submitting...
+            } @else {
+              Submit Enquiry
+            }
+          </button>
+        </form>
+        @if (showConfirmation()) {
+          <div class="sidebar-toast">✅ Enquiry submitted successfully! Our representative will contact you.</div>
+        }
+      </div>
+
+      <!-- RELATED LIST -->
+      <div class="related-list-card glass-card">
+        <h3>Related Inventory</h3>
+        <div class="related-items-grid">
+          @for (item of relatedProperties(); track item.slug) {
+            <a class="related-item-link" [routerLink]="['/property', item.slug]">
+              <img [src]="item.image" [alt]="item.name" />
+              <div class="related-info">
+                <strong>{{ item.name }}</strong>
+                <span>{{ item.price }} • {{ item.location.split(',')[0] }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- LIGHTBOX GALLERY POPUP -->
+@if (galleryPreviewImage()) {
+  <div class="lightbox-backdrop" (click)="galleryPreviewImage.set(null)">
+    <div class="lightbox-container" (click)="$event.stopPropagation()">
+      <button class="lightbox-close" (click)="galleryPreviewImage.set(null)">×</button>
+      <img [src]="galleryPreviewImage()!" alt="High resolution showcase image" />
+    </div>
+  </div>
+}

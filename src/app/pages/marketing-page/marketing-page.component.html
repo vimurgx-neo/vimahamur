@@ -1,0 +1,256 @@
+<section class="page-hero">
+  <div class="container page-hero__grid">
+    <div>
+      <div class="eyebrow">Vimahamur Luxury Property Experience</div>
+      <h1>
+        @switch (page()) {
+          @case ('properties') { Premium Inventory } 
+          @case ('contact') { Talk to Sales } 
+          @case ('about') { About Vimahamur }
+          @case ('services') { Curated Services }
+          @case ('blog') { Market Insights }
+          @default { Premium Inventory }
+        }
+      </h1>
+      <p>
+        Polished digital property showcases, verified information sheets, and priority site visit bookings.
+      </p>
+    </div>
+    <div class="page-hero__card glass-card">
+      <div class="eyebrow">Direct Desk</div>
+      <p>Mon - Sat • 9:00 AM to 7:00 PM</p>
+      <div class="hero-card-actions">
+        <a class="btn btn-primary" routerLink="/properties">Explore Listings</a>
+        <a class="btn btn-secondary" routerLink="/contact">Request Tour</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT SECTIONS -->
+<div class="page-content-wrapper">
+  @if (isLoading()) {
+    <div class="container skeleton-container">
+      <div class="skeleton-header"></div>
+      <div class="skeleton-grid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </div>
+  } @else {
+    @switch (page()) {
+      @case ('contact') {
+        <section class="content-section">
+          <div class="container contact-grid-wrapper">
+            <div class="contact-left-details">
+              <h2>Connect with our office desk.</h2>
+              <p>For custom investment opportunities, structural custom inquiries, or site visit logs.</p>
+              
+              <div class="contact-bullets">
+                <div class="bullet-box">
+                  <strong>📞 Telephony Desk</strong>
+                  <span>+91 90953 92629</span>
+                </div>
+                <div class="bullet-box">
+                  <strong>💬 WhatsApp Concierge</strong>
+                  <span>+91 90953 92629</span>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="contact-form-card glass-card">
+              <h3>Enquiry Registration Form</h3>
+              <form class="lead-form" (ngSubmit)="submitEnquiry()">
+                <label><span>Name</span><input type="text" [(ngModel)]="enquiry.name" name="name" required /></label>
+                <label><span>Phone</span><input type="tel" [(ngModel)]="enquiry.phone" name="phone" required /></label>
+                <label><span>Email</span><input type="email" [(ngModel)]="enquiry.email" name="email" required /></label>
+                <label><span>Location Interests</span><input type="text" [(ngModel)]="enquiry.city" name="city" /></label>
+                <label class="full-span"><span>Property Interest</span><input type="text" [(ngModel)]="enquiry.property" name="property" /></label>
+                <label class="full-span"><span>Your Message</span><textarea rows="4" [(ngModel)]="enquiry.message" name="message"></textarea></label>
+                <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+                  @if (isSubmitting()) {
+                    <span class="btn-spinner"></span> Sending...
+                  } @else {
+                    Register Enquiry
+                  }
+                </button>
+              </form>
+              @if (showConfirmation()) {
+                <div class="confirmation-toast">✅ Enquiry submitted. A representative will contact you shortly.</div>
+              }
+            </div>
+          </div>
+
+          <!-- INTERACTIVE REGIONAL GOOGLE MAPS SHOWCASE -->
+          <div class="container regional-map-showcase-container">
+            <div class="section-header-centered">
+              <div class="eyebrow">Interactive Corridor Explorer</div>
+              <h2>Interactive Maps & Office Coordinates</h2>
+              <p>Explore our active project coordinates and local offices across Salem, Trichy, Coimbatore, Namakkal, and Edapadi.</p>
+            </div>
+            
+            <div class="map-city-tabs">
+              @for (city of cities; track city.id) {
+                <button 
+                  type="button" 
+                  class="map-city-tab-btn" 
+                  [class.active]="selectedCityId() === city.id"
+                  (click)="selectedCityId.set(city.id)">
+                  <span class="tab-dot"></span>
+                  <span class="tab-label">{{ city.name }}</span>
+                </button>
+              }
+            </div>
+
+            <div class="map-showcase-layout">
+              <div class="map-iframe-wrapper">
+                <iframe
+                  [src]="sanitizedMapUrl()"
+                  width="100%"
+                  height="360"
+                  style="border:0; border-radius: 16px; box-shadow: var(--shadow-light);"
+                  allowfullscreen=""
+                  loading="lazy">
+                </iframe>
+              </div>
+
+              <div class="map-details-card glass-card">
+                <div class="card-header-flex">
+                  <span class="city-badge">{{ activeCity().badge }}</span>
+                </div>
+                <h3>{{ activeCity().name }} Corridor</h3>
+                <p class="city-description">{{ activeCity().description }}</p>
+
+                <div class="highlights-grid">
+                  @for (h of activeCity().highlights; track h) {
+                    <div class="highlight-chip">
+                      <span class="chip-icon">✦</span>
+                      <span class="chip-text">{{ h }}</span>
+                    </div>
+                  }
+                </div>
+
+                <div class="office-info">
+                  <div class="info-row">
+                    <span class="info-icon">📞</span>
+                    <span class="info-text"><strong>Phone Link:</strong> {{ activeCity().phone }}</span>
+                  </div>
+                </div>
+
+                <div class="action-buttons-row">
+                  <a [href]="activeCity().directionUrl" target="_blank" rel="noopener" class="btn btn-outline-small">
+                    🗺️ Directions
+                  </a>
+                  <a routerLink="/properties" [queryParams]="{search: activeCity().name}" class="btn btn-primary-small">
+                    Explore {{ activeCity().name }} Plots
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      }
+
+      @default {
+        <section class="content-section">
+          <div class="container">
+            <!-- Advanced Filter Controls -->
+            <div class="advanced-filter-bar glass-card">
+              <h3>Filter Properties</h3>
+              <form class="filters-form" (ngSubmit)="applyFilters()">
+                <div class="form-inputs-row">
+                  <label>
+                    <span>Search Keywords</span>
+                    <input type="search" placeholder="e.g. Whitefield, Villa" [ngModel]="locationFilter()" (ngModelChange)="locationFilter.set($event); applyFilters()" name="location" />
+                  </label>
+                  <label>
+                    <span>Category</span>
+                    <select [ngModel]="typeFilter()" (ngModelChange)="typeFilter.set($event); applyFilters()" name="type">
+                      <option value="All">All Categories</option>
+                      <option value="Luxury Villas">Luxury Villas</option>
+                      <option value="Premium Plots">Premium Plots</option>
+                      <option value="Commercial">Commercial Spaces</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Budget Range</span>
+                    <select [ngModel]="budgetFilter()" (ngModelChange)="budgetFilter.set($event); applyFilters()" name="budget">
+                      <option value="All">All Budgets</option>
+                      <option value="Under 1 Cr">Under ₹1 Cr</option>
+                      <option value="1-2 Cr">₹1 Cr - ₹2 Cr</option>
+                      <option value="Above 2 Cr">Above ₹2 Cr</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Sort Order</span>
+                    <select [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event); applyFilters()" name="sort">
+                      <option value="featured">Featured First</option>
+                      <option value="price-low">Price: Low to High</option>
+                      <option value="price-high">Price: High to Low</option>
+                    </select>
+                  </label>
+                </div>
+              </form>
+            </div>
+
+            <div class="properties-results-row">
+              <p class="result-count">Showing <strong>{{ filteredProperties().length }}</strong> signature projects</p>
+            </div>
+
+            <div class="card-grid">
+              @for (item of pagedProperties(); track item.slug) {
+                <article class="property-card">
+                  <div class="property-image">
+                    <img [src]="item.image" [alt]="item.name" loading="lazy" />
+                    @if (item.featured) {
+                      <span class="badge">Featured</span>
+                    } @else {
+                      <span class="badge badge--new">New Listing</span>
+                    }
+                    <button 
+                      type="button" 
+                      class="bookmark-btn" 
+                      [class.saved]="isSaved(item._id)" 
+                      (click)="toggleSaveProperty($event, item._id)"
+                      [attr.aria-label]="isSaved(item._id) ? 'Unsave Property' : 'Save Property'">
+                      {{ isSaved(item._id) ? '❤️' : '🤍' }}
+                    </button>
+                  </div>
+                  <div class="property-body">
+                    <h3>{{ item.name }}</h3>
+                    <p class="location">{{ item.location }}</p>
+                    <div class="meta-line">
+                      <span>{{ item.price }}</span>
+                      <span>{{ item.area }}</span>
+                    </div>
+                    <div class="card-actions">
+                      <a class="btn btn-primary" [routerLink]="['/property', item.slug]" style="width: 100%; text-align: center;">View Details</a>
+                    </div>
+                  </div>
+                </article>
+              } @empty {
+                <div class="empty-state-card full-span">
+                  <div class="empty-icon">🔍</div>
+                  <h3>No Properties Match Your Criteria</h3>
+                  <p>Try resetting the filters or modifying your location search query.</p>
+                  <button class="btn btn-primary" (click)="locationFilter.set(''); typeFilter.set('All'); budgetFilter.set('All'); applyFilters()">Reset All Filters</button>
+                </div>
+              }
+            </div>
+
+            <!-- PAGINATION -->
+            @if (totalPages() > 1) {
+              <nav class="pagination-nav" aria-label="Properties Pages">
+                <button class="btn btn-secondary" type="button" [disabled]="currentPage() === 1" (click)="setPage(currentPage() - 1)">Previous</button>
+                <span class="page-indicator">Page {{ currentPage() }} of {{ totalPages() }}</span>
+                <button class="btn btn-secondary" type="button" [disabled]="currentPage() === totalPages()" (click)="setPage(currentPage() + 1)">Next</button>
+              </nav>
+            }
+          </div>
+        </section>
+      }
+    }
+  }
+</div>

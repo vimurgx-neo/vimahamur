@@ -1,0 +1,420 @@
+<div class="admin-layout" [class.sidebar-collapsed]="isSidebarCollapsed()" [class.mobile-sidebar-open]="isMobileSidebarOpen()">
+  <!-- ADMIN SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="admin-logo">
+        <span class="logo-mark"></span>
+        <h2 class="brand-text">Vimahamur</h2>
+      </div>
+      <button class="toggle-sidebar-btn" (click)="toggleSidebar()" aria-label="Toggle Sidebar">
+        <span class="toggle-icon"></span>
+      </button>
+    </div>
+
+    <!-- USER PROFILE SECTION -->
+    <div class="sidebar-user">
+      <div class="user-avatar">
+        <span>{{ userInitials() }}</span>
+      </div>
+      <div class="user-info">
+        <span class="user-name">{{ userName() }}</span>
+        <span class="user-role">{{ userRole() }}</span>
+      </div>
+    </div>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="sidebar-nav">
+      <button [class.active]="activeTab() === 'properties'" (click)="activeTab.set('properties'); isMobileSidebarOpen.set(false)" class="nav-item">
+        <span class="nav-icon">📐</span>
+        <span class="nav-text">Properties Inventory</span>
+      </button>
+      <button [class.active]="activeTab() === 'leads'" (click)="activeTab.set('leads'); isMobileSidebarOpen.set(false)" class="nav-item">
+        <span class="nav-icon">🎯</span>
+        <span class="nav-text">Leads & Enquiries</span>
+      </button>
+      <button [class.active]="activeTab() === 'bookings'" (click)="activeTab.set('bookings'); isMobileSidebarOpen.set(false)" class="nav-item">
+        <span class="nav-icon">📅</span>
+        <span class="nav-text">Site Visit Tours</span>
+      </button>
+    </nav>
+
+    <!-- FOOTER / LOGOUT -->
+    <div class="sidebar-footer">
+      <button class="btn-logout-sidebar" (click)="logout()">
+        <span class="nav-icon">🚪</span>
+        <span class="nav-text">Log Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MOBILE SIDEBAR OVERLAY -->
+  <div class="mobile-sidebar-overlay" (click)="isMobileSidebarOpen.set(false)"></div>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="admin-main-container">
+    <!-- WORKSPACE HEADER -->
+    <header class="main-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" (click)="toggleMobileSidebar()" aria-label="Open menu">
+          ☰
+        </button>
+        <h1 class="page-title">{{ activeTabTitle() }}</h1>
+      </div>
+      <div class="header-right">
+        <div class="header-user-pill">
+          <span class="user-pill-name">{{ userName() }}</span>
+          <span class="user-pill-avatar">{{ userInitials() }}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-content">
+    <!-- PROPERTIES INVENTORY TAB -->
+    @if (activeTab() === 'properties') {
+    <div class="inventory-section">
+      <div class="section-header">
+        <h3>Listed Real Estate Units</h3>
+        <button class="btn btn-primary" (click)="openAddModal()">✚ Add New Property</button>
+      </div>
+
+      <div class="table-wrapper glass-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Price</th>
+              <th>Area</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of properties(); track p.slug) {
+            <tr>
+              <td>
+                <img [src]="p.image" alt="Thumbnail" class="thumbnail-preview" />
+              </td>
+              <td><strong>{{ p.name }}</strong></td>
+              <td><span class="role-badge">{{ p.category }}</span></td>
+              <td>{{ p.location }}</td>
+              <td><strong>{{ p.price }}</strong></td>
+              <td>{{ p.area }}</td>
+              <td class="text-right">
+                <div class="action-buttons-flex">
+                  <button class="btn btn-outline btn-xs" (click)="openEditModal(p)">✏️ Edit</button>
+                  <button class="btn btn-danger btn-xs" (click)="deleteProperty(p._id)">🗑️ Delete</button>
+                </div>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="7" class="empty-row">No properties found. Add one to start.</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
+
+    <!-- LEADS MANAGEMENT TAB -->
+    @if (activeTab() === 'leads') {
+    <div class="leads-section">
+      <h3>Customer Enquiries</h3>
+      <div class="table-wrapper glass-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Contact</th>
+              <th>Property Interest</th>
+              <th>Budget</th>
+              <th>Source</th>
+              <th>Status</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (lead of leads(); track lead._id) {
+            <tr>
+              <td><strong>{{ lead.customer }}</strong></td>
+              <td>
+                <div>📞 {{ lead.phone }}</div>
+                <div class="sub-text">✉️ {{ lead.email || 'N/A' }}</div>
+              </td>
+              <td>{{ lead.property }}</td>
+              <td>{{ lead.budget || 'N/A' }}</td>
+              <td><span class="source-chip">{{ lead.source }}</span></td>
+              <td>
+                <select [value]="lead.status" (change)="updateLeadStatus(lead._id, $any($event.target).value)"
+                  class="status-select">
+                  <option value="New">New</option>
+                  <option value="Contacted">Contacted</option>
+                  <option value="Site Visit">Site Visit</option>
+                  <option value="Negotiation">Negotiation</option>
+                  <option value="Booked">Booked</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </td>
+              <td class="text-right">
+                <button class="btn btn-outline-danger btn-xs" (click)="deleteLead(lead._id)">Delete</button>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="7" class="empty-row">No enquiries received yet.</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
+
+    <!-- SITE VISIT BOOKINGS TAB -->
+    @if (activeTab() === 'bookings') {
+    <div class="bookings-section">
+      <h3>Site Visit Bookings</h3>
+      <div class="table-wrapper glass-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Property</th>
+              <th>Preferred Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (b of bookings(); track b._id) {
+            <tr>
+              <td>
+                <strong>{{ b.customerName }}</strong>
+                <div class="sub-text">📞 {{ b.customerPhone }}</div>
+              </td>
+              <td>{{ b.propertyName }}</td>
+              <td>{{ b.preferredDate | date:'mediumDate' }}</td>
+              <td>{{ b.preferredTime }}</td>
+              <td>
+                <select [value]="b.status" (change)="updateBookingStatus(b._id, $any($event.target).value)"
+                  class="status-select">
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </td>
+              <td class="text-right">
+                <button class="btn btn-outline-danger btn-xs" (click)="deleteBooking(b._id)">Delete</button>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="6" class="empty-row">No site visit appointments booked yet.</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
+    </main>
+  </div>
+
+  <!-- CREATE / EDIT PROPERTY MODAL -->
+  @if (showModal()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-card wide-modal" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="closeModal()">×</button>
+      <div class="modal-header-section">
+        <h3>{{ modalMode() === 'create' ? 'Create New Listing' : 'Edit Listing' }}</h3>
+      </div>
+
+      <form class="modal-form" (ngSubmit)="saveProperty()">
+        <div class="form-grid">
+          <!-- Left inputs column -->
+          <div class="form-column">
+            <label>
+              <span>Property Name *</span>
+              <input type="text" [(ngModel)]="formModel.name" name="name" required
+                placeholder="e.g. Emerald Haven Plots" />
+            </label>
+
+            <div class="form-row-two">
+              <label>
+                <span>Price Label *</span>
+                <input type="text" [(ngModel)]="formModel.price" name="price" required placeholder="e.g. ₹45 Lakh" />
+              </label>
+              <label>
+                <span>Numeric Value (Lakhs) *</span>
+                <input type="number" [(ngModel)]="formModel.priceValue" name="priceValue" required />
+              </label>
+            </div>
+
+            <div class="form-row-two">
+              <label>
+                <span>Category *</span>
+                <select [(ngModel)]="formModel.category" name="category" required>
+                  <option value="Luxury">Luxury</option>
+                  <option value="Luxury Villas">Luxury Villas</option>
+                  <option value="Plots">Plots</option>
+                  <option value="Premium Plots">Premium Plots</option>
+                  <option value="Commercial">Commercial</option>
+                </select>
+              </label>
+              <label>
+                <span>Area Size *</span>
+                <input type="text" [(ngModel)]="formModel.area" name="area" required placeholder="e.g. 1,500 sq ft" />
+              </label>
+            </div>
+
+            <label>
+              <span>Location *</span>
+              <input type="text" [(ngModel)]="formModel.location" name="location" required
+                placeholder="e.g. Bypass Road, Salem" />
+            </label>
+
+            <label>
+              <span>Sub-type Name *</span>
+              <input type="text" [(ngModel)]="formModel.type" name="type" required
+                placeholder="e.g. Premium Villa Plots" />
+            </label>
+
+            <label>
+              <span>Description *</span>
+              <textarea rows="4" [(ngModel)]="formModel.description" name="description" required
+                placeholder="Describe the property highlights, design guidelines, and location advantages..."></textarea>
+            </label>
+
+            <!-- FEATURED LISTING CHECKBOX -->
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="formModel.featured" name="featured" />
+              <span>Featured Property (Showcase in home slideshow)</span>
+            </label>
+          </div>
+
+          <!-- Right media uploads column -->
+          <div class="form-column">
+            <!-- PRIMARY IMAGE UPLOADER -->
+            <div class="upload-container-box">
+              <span class="field-label">Primary Cover Image *</span>
+              <div class="upload-field-layout">
+                @if (formModel.image) {
+                <div class="image-preview-wrapper">
+                  <img [src]="formModel.image" alt="Primary Image" class="preview-img" />
+                  <button type="button" class="btn-remove-img" (click)="formModel.image = ''">Remove ✕</button>
+                </div>
+                } @else {
+                <div class="file-dropzone">
+                  <input type="file" accept="image/*" (change)="onMainImageSelected($event)" id="mainImageInput"
+                    class="hidden-file-input" />
+                  <label for="mainImageInput" class="dropzone-trigger">
+                    @if (isUploadingMain()) {
+                    <span class="upload-spinner"></span> <span>Uploading file...</span>
+                    } @else {
+                    <span>📁 Select Primary Image</span>
+                    }
+                  </label>
+                </div>
+                }
+              </div>
+            </div>
+
+            <!-- GALLERY IMAGES MULTI-UPLOADER -->
+            <div class="upload-container-box">
+              <span class="field-label">Gallery Slideshow</span>
+              <div class="gallery-previews-grid">
+                @for (img of formModel.gallery; track img; let i = $index) {
+                <div class="gallery-thumb-wrapper">
+                  <img [src]="img" alt="Gallery thumbnail" class="thumb-img" />
+                  <button type="button" class="btn-remove-thumb" (click)="removeGalleryImage(i)">✕</button>
+                </div>
+                }
+
+                <div class="gallery-add-card">
+                  <input type="file" accept="image/*" multiple (change)="onGalleryImagesSelected($event)"
+                    id="galleryImageInput" class="hidden-file-input" />
+                  <label for="galleryImageInput" class="add-thumb-trigger">
+                    @if (isUploadingGallery()) {
+                    <span class="upload-spinner"></span>
+                    } @else {
+                    <span>➕ Add</span>
+                    }
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- AMENITIES CHIP LIST -->
+            <div class="chips-input-container">
+              <span class="field-label">Layout Amenities</span>
+              <div class="chips-row">
+                @for (a of formModel.amenities; track a; let i = $index) {
+                <span class="chip-item">
+                  {{ a }} <button type="button" class="remove-chip-btn" (click)="removeAmenity(i)">×</button>
+                </span>
+                }
+              </div>
+              <div class="chip-adder-flex">
+                <input type="text" [(ngModel)]="newAmenity" name="newAmenity" placeholder="e.g. Infinity Pool"
+                  (keyup.enter)="addAmenity()" />
+                <button type="button" class="btn btn-outline btn-sm" (click)="addAmenity()">Add</button>
+              </div>
+            </div>
+
+            <!-- NEARBY PLACES CHIP LIST -->
+            <div class="chips-input-container">
+              <span class="field-label">Nearby Infrastructure Landmarks</span>
+              <div class="chips-row">
+                @for (n of formModel.nearbyPlaces; track n; let i = $index) {
+                <span class="chip-item">
+                  {{ n }} <button type="button" class="remove-chip-btn" (click)="removeNearbyPlace(i)">×</button>
+                </span>
+                }
+              </div>
+              <div class="chip-adder-flex">
+                <input type="text" [(ngModel)]="newNearby" name="newNearby" placeholder="e.g. Central Bus Stand"
+                  (keyup.enter)="addNearbyPlace()" />
+                <button type="button" class="btn btn-outline btn-sm" (click)="addNearbyPlace()">Add</button>
+              </div>
+            </div>
+
+            <!-- FLOOR PLANS CHIP LIST -->
+            <div class="chips-input-container">
+              <span class="field-label">Floor Plans Layouts</span>
+              <div class="chips-row">
+                @for (fp of formModel.floorPlans; track fp; let i = $index) {
+                <span class="chip-item">
+                  {{ fp }} <button type="button" class="remove-chip-btn" (click)="removeFloorPlan(i)">×</button>
+                </span>
+                }
+              </div>
+              <div class="chip-adder-flex">
+                <input type="text" [(ngModel)]="newFloorPlan" name="newFloorPlan"
+                  placeholder="e.g. Ground Floor • 3 BHK • 1,500 sq ft" (keyup.enter)="addFloorPlan()" />
+                <button type="button" class="btn btn-outline btn-sm" (click)="addFloorPlan()">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-footer-actions">
+          <button type="button" class="btn btn-outline" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary"
+            [disabled]="isSubmitting() || isUploadingMain() || isUploadingGallery()">
+            @if (isSubmitting()) {
+            <span class="btn-spinner"></span> Saving Listing...
+            } @else {
+            Save Property Listing
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+</div>

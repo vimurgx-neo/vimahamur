@@ -1,0 +1,125 @@
+@if (!isAdminRoute() && !isAuthRoute()) {
+  <header class="topbar" [class.transparent-header]="isHomeRoute() && !isScrolled()">
+    <div class="container topbar-inner">
+      <a class="brand" routerLink="/">
+        <span class="brand-mark"></span>
+        <span>Vimahamur Luxury Property</span>
+      </a>
+
+      <nav class="nav-links">
+        <a routerLink="/" routerLinkActive="active-nav" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a routerLink="/properties" routerLinkActive="active-nav">Properties</a>
+        <a routerLink="/contact" routerLinkActive="active-nav">Contact</a>
+      </nav>
+
+      <div class="topbar-user-actions">
+        @if (isAuthenticated() && currentUser()?.userName) {
+          <button class="nav-btn-saved" (click)="toggleSavedModal()">
+            ❤️ Saved @if (savedProperties().length > 0) { <span class="badge">{{ savedProperties().length }}</span> }
+          </button>
+          
+          @if (currentUser()?.role === 'Admin' || currentUser()?.role === 'SuperAdmin') {
+            <a routerLink="/admin/dashboard" class="btn btn-outline btn-xs nav-admin-btn">🛡️ Admin Panel</a>
+          }
+
+          <div class="user-pill-dropdown">
+            <span class="user-greeting">👤 {{ currentUser()?.userName ?? 'Account' }}</span>
+            <button type="button" class="logout-link-btn" (click)="logout()">Sign Out</button>
+          </div>
+        } @else {
+          <a routerLink="/login" class="nav-login-btn">🔑 Sign In</a>
+          <a routerLink="/register" class="btn btn-primary btn-xs nav-register-btn">Create Account</a>
+        }
+      </div>
+    </div>
+  </header>
+}
+
+<main>
+  <router-outlet />
+</main>
+
+@if (!isAdminRoute() && !isAuthRoute()) {
+  <div class="floating-actions" aria-label="Quick contact actions">
+    <a class="whatsapp" href="https://wa.me/918072862702" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <img src="/whatsapp-logo.png" alt="WhatsApp" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+    </a>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand-column">
+        <div class="brand-footer">Vimahamur Luxury Property</div>
+        <p>Bespoke land developments and premium gated community plots crafted for legacy investments.</p>
+        <div class="footer-socials">
+          <!-- Facebook Icon -->
+          <a href="https://facebook.com/vimahamur-luxury-property" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+          </a>
+          <!-- Instagram Icon -->
+          <a href="https://instagram.com/vimahamur-luxury-property" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a routerLink="/properties">Properties</a>
+        <a routerLink="/contact">Contact</a>
+        <a routerLink="/login" style="opacity: 0.6; font-size: 11px; margin-top: 12px; display: block;">Portal Access</a>
+      </div>
+      <div>
+        <h4>Contact Desk</h4>
+        <p>Email: <br><a href="mailto:contact@vimahamurluxuryproperty.com">contact@vimahamurluxuryproperty.com</a></p>
+        <p>WhatsApp: <br><a href="https://wa.me/918072862702" target="_blank" rel="noopener noreferrer">+91 80728 62702</a></p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>&copy; 2026 Vimahamur Luxury Property. All rights reserved.</p>
+        <div class="footer-qr-code">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://vimahamurluxuryproperty.com" alt="Vimahamur Website QR Code" class="qr-code-img" />
+          <span class="qr-code-label">Scan to Visit</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+}
+
+<!-- SAVED PROPERTIES MODAL -->
+@if (showSavedModal()) {
+  <div class="modal-backdrop" (click)="toggleSavedModal()">
+    <div class="modal-card saved-modal-card" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="toggleSavedModal()">×</button>
+      
+      <div class="modal-header-section">
+        <h3>❤️ Saved Properties</h3>
+        <p>Your bookmarked real estate units for quick access.</p>
+      </div>
+
+      <div class="saved-list-container">
+        @for (item of savedProperties(); track item.slug) {
+          <div class="saved-item-row">
+            <img [src]="item.image" alt="Property thumbnail" class="saved-thumb" />
+            <div class="saved-info">
+              <h4>{{ item.name }}</h4>
+              <p class="saved-loc">📍 {{ item.location }}</p>
+              <div class="saved-price"><strong>{{ item.price }}</strong> • {{ item.area }}</div>
+            </div>
+            <div class="saved-actions">
+              <a [routerLink]="['/property', item.slug]" (click)="toggleSavedModal()" class="btn btn-outline btn-xs">View Listing ➔</a>
+            </div>
+          </div>
+        } @empty {
+          <div class="saved-empty-state">
+            <p>You haven't bookmarked any properties yet.</p>
+            <a routerLink="/properties" (click)="toggleSavedModal()" class="btn btn-primary btn-xs">Browse Properties</a>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+

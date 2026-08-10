@@ -1,0 +1,345 @@
+<section class="hero-shell">
+  <video #bgVideo class="hero-video-bg" autoplay loop [muted]="true" [volume]="0" playsinline preload="auto">
+    <source src="/please_hide_or_remove_gemini_l.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-watermark-overlay"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">Luxury Land Development</div>
+      <h1>YOUR DREAM. YOUR LAND.</h1>
+      <p class="hero-subtitle">
+        Premium secure plots in a gated residential community.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" routerLink="/properties">Explore Plots</a>
+        <button class="btn btn-secondary" type="button" (click)="openVisitModal()">Book Visit</button>
+      </div>
+
+      <div class="trust-indicators-row">
+        <div class="trust-item"><span class="check-mark">✓</span> Blacktop Roads</div>
+        <div class="trust-item"><span class="check-mark">✓</span> LED Street Lighting</div>
+        <div class="trust-item"><span class="check-mark">✓</span> 24/7 Water Connection</div>
+        <div class="trust-item"><span class="check-mark">✓</span> Fully Gated Community</div>
+        <div class="trust-item"><span class="check-mark">✓</span> Secure Compound Wall</div>
+        <div class="trust-item"><span class="check-mark">✓</span> DTCP Approved</div>
+        <div class="trust-item"><span class="check-mark">✓</span> RERA Registered</div>
+        <div class="trust-item"><span class="check-mark">✓</span> 24/7 CCTV Surveillance</div>
+        <div class="trust-item"><span class="check-mark">✓</span> Landscaped Children’s Park</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREFERRED LOCATIONS SECTION -->
+<section class="why-choose-us">
+  <div class="container">
+    <div class="section-header center">
+      <div class="eyebrow">SIGNATURE DESTINATIONS</div>
+      <h2>Prestige Land Enclaves Across Prime Corridors</h2>
+    </div>
+    <div class="places-grid">
+      <div class="place-card">
+        <div class="place-image" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80');"></div>
+        <div class="place-card-overlay"></div>
+        <div class="place-card-content">
+          <span class="place-badge">High Growth Corridor</span>
+          <h3>Salem</h3>
+          <p>Strategically situated residential plots with excellent highway access.</p>
+          <a class="place-action-link" routerLink="/properties" [queryParams]="{search: 'Salem'}">View Layouts ➔</a>
+        </div>
+      </div>
+      <div class="place-card">
+        <div class="place-image" style="background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80');"></div>
+        <div class="place-card-overlay"></div>
+        <div class="place-card-content">
+          <span class="place-badge">Transit Hub Zone</span>
+          <h3>Trichy</h3>
+          <p>High-growth zones near major transit lanes and elite educational hubs.</p>
+          <a class="place-action-link" routerLink="/properties" [queryParams]="{search: 'Trichy'}">View Layouts ➔</a>
+        </div>
+      </div>
+      <div class="place-card">
+        <div class="place-image" style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80');"></div>
+        <div class="place-card-overlay"></div>
+        <div class="place-card-content">
+          <span class="place-badge">Tranquil Meadows</span>
+          <h3>Namakkal</h3>
+          <p>Gated communities featuring internal roads and clear water utilities.</p>
+          <a class="place-action-link" routerLink="/properties" [queryParams]="{search: 'Namakkal'}">View Layouts ➔</a>
+        </div>
+      </div>
+      <div class="place-card">
+        <div class="place-image" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80');"></div>
+        <div class="place-card-overlay"></div>
+        <div class="place-card-content">
+          <span class="place-badge">Premium Hill Vista</span>
+          <h3>Coimbatore</h3>
+          <p>Premium luxury villa plots set in scenic neighborhoods with full utilities.</p>
+          <a class="place-action-link" routerLink="/properties" [queryParams]="{search: 'Coimbatore'}">View Layouts ➔</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED INVENTORY WITH CATEGORY CHIPS -->
+<section class="feature-section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="eyebrow">Signature Inventory</div>
+        <h2>Curated properties for high-intent buyers</h2>
+      </div>
+      <a routerLink="/properties" class="btn btn-outline">View All Listings</a>
+    </div>
+
+    <!-- Category Switcher Chips -->
+    <div class="category-switcher" role="tablist" aria-label="Filter properties by category">
+      <button class="chip-btn" [class.active]="selectedCategory() === 'All'" (click)="selectedCategory.set('All')">🌐 All Properties</button>
+      <button class="chip-btn" [class.active]="selectedCategory() === 'Luxury Villas'" (click)="selectedCategory.set('Luxury Villas')">💎 Luxury Villas</button>
+      <button class="chip-btn" [class.active]="selectedCategory() === 'Premium Plots'" (click)="selectedCategory.set('Premium Plots')">📐 Premium Plots</button>
+      <button class="chip-btn" [class.active]="selectedCategory() === 'Commercial'" (click)="selectedCategory.set('Commercial')">🏢 Commercial</button>
+    </div>
+
+    <div class="card-grid">
+      @for (item of featuredProjects(); track item.name) {
+        <article class="property-card">
+          <div class="property-image">
+            <img [src]="item.image" [alt]="item.name" />
+            <span class="badge">{{ item.type }}</span>
+            <button 
+              type="button" 
+              class="bookmark-btn" 
+              [class.saved]="isSaved(item._id)" 
+              (click)="toggleSaveProperty($event, item._id)"
+              [attr.aria-label]="isSaved(item._id) ? 'Unsave Property' : 'Save Property'">
+              {{ isSaved(item._id) ? '❤️' : '🤍' }}
+            </button>
+          </div>
+          <div class="property-body">
+            <h3>{{ item.name }}</h3>
+            <p class="location">📍 {{ item.location }}</p>
+            <div class="meta-line">
+              <span>{{ item.price }}</span>
+              <span>{{ item.area }}</span>
+            </div>
+            <div class="stacked-tag">
+              @for (amenity of item.amenities.slice(0, 3); track amenity) {
+                <span>{{ amenity }}</span>
+              }
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary" (click)="openVisitModal()">Book Visit</button>
+              <a class="btn btn-secondary" [routerLink]="['/property', getPropertySlug(item.name)]">Details</a>
+            </div>
+          </div>
+        </article>
+      } @empty {
+        <div class="empty-state">
+          <p>No featured properties found in this category.</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+
+<!-- GLASSMORPHISM STATISTICS & ABOUT -->
+<section class="about-section">
+  <div class="container about-grid">
+    <div>
+      <div class="eyebrow">About Vimahamur Luxury Property</div>
+      <h2>Luxury branding meets development precision.</h2>
+      <p>
+        Vimahamur Luxury Property helps premium real-estate buyers present a polished digital journey with higher trust,
+        richer storytelling, and better lead capture. Every layout is structured for performance, credibility,
+        and premium presentation.
+      </p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card glass-card"><strong>12+</strong><span>City Launches</span></div>
+      <div class="stat-card glass-card"><strong>2.4k</strong><span>Qualified Leads</span></div>
+      <div class="stat-card glass-card"><strong>36%</strong><span>Higher Inquiry Rate</span></div>
+      <div class="stat-card glass-card"><strong>5 min</strong><span>Average Response</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TESTIMONIALS SLIDER CAROUSEL -->
+<section class="testimonial-section">
+  <div class="container">
+    <div class="section-header center">
+      <div class="eyebrow">Testimonials</div>
+      <h2>Trusted by buyers, investors, and sales teams.</h2>
+    </div>
+    
+    <div class="testimonial-carousel-wrapper">
+      <button type="button" class="nav-arrow prev" (click)="prevTestimonial()" aria-label="Previous Testimonial">←</button>
+      
+      <div class="testimonial-glass-card">
+        <div class="quote-icon">“</div>
+        @let activeTestimonial = testimonials()[activeTestimonialIndex()];
+        @if (activeTestimonial) {
+          <div class="testimonial-slide">
+            <p class="quote-text">{{ activeTestimonial.quote }}</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">{{ activeTestimonial.name.charAt(0) }}</div>
+              <div class="author-meta">
+                <strong>{{ activeTestimonial.name }}</strong>
+                <span>{{ activeTestimonial.role }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <button type="button" class="nav-arrow next" (click)="nextTestimonial()" aria-label="Next Testimonial">→</button>
+    </div>
+    
+    <div class="dots-indicators">
+      @for (item of testimonials(); track item.name; let i = $index) {
+        <span class="carousel-dot" [class.active]="activeTestimonialIndex() === i" (click)="activeTestimonialIndex.set(i)"></span>
+      }
+    </div>
+  </div>
+</section>
+
+
+<!-- REGIONAL INTERACTIVE MAP SHOWCASE -->
+<section class="contact-section">
+  <div class="container contact-grid">
+    <div class="contact-copy">
+      <div class="eyebrow">Interactive Regional Showcase</div>
+      <h2>Our Premium Corridor Coverage Map</h2>
+      <p class="section-lead-text">Click on any region below to view real-time Google Maps coordinates, directions, local offices, and premium gated residential enclaves.</p>
+      
+      <!-- Interactive City Selection Pills -->
+      <div class="map-city-tabs">
+        @for (city of cities; track city.id) {
+          <button 
+            type="button" 
+            class="map-city-tab-btn" 
+            [class.active]="selectedCityId() === city.id"
+            (click)="selectedCityId.set(city.id)">
+            <span class="tab-dot"></span>
+            <span class="tab-label">{{ city.name }}</span>
+          </button>
+        }
+      </div>
+
+      <!-- MAP AND DETAIL CONTAINER -->
+      <div class="map-showcase-container">
+        <!-- MAP IFRAME -->
+        <div class="map-card-wrapper">
+          <iframe
+            [src]="sanitizedMapUrl()"
+            width="100%"
+            height="340"
+            style="border:0; border-radius: 12px; transition: all 0.3s ease-in-out;"
+            allowfullscreen=""
+            loading="lazy">
+          </iframe>
+        </div>
+
+        <!-- LOCATION CARD DETAILS -->
+        <div class="map-details-card glass-card">
+          <div class="card-header-flex">
+            <span class="city-badge">{{ activeCity().badge }}</span>
+          </div>
+          <h3>{{ activeCity().name }} Enclave</h3>
+          <p class="city-description">{{ activeCity().description }}</p>
+          
+          <div class="highlights-grid">
+            @for (h of activeCity().highlights; track h) {
+              <div class="highlight-chip">
+                <span class="chip-icon">✦</span>
+                <span class="chip-text">{{ h }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="office-info">
+            <div class="info-row">
+              <span class="info-icon">📞</span>
+              <span class="info-text"><strong>Enquiries:</strong> {{ activeCity().phone }}</span>
+            </div>
+          </div>
+
+          <div class="action-buttons-row">
+            <a [href]="activeCity().directionUrl" target="_blank" rel="noopener" class="btn btn-outline-small">
+              🗺️ Directions
+            </a>
+            <a routerLink="/properties" [queryParams]="{search: activeCity().name}" class="btn btn-primary-small">
+              Explore Projects
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENQUIRY FORM WITH STATUS INDICATORS -->
+    <div class="lead-form-wrapper">
+      <form class="lead-form" (ngSubmit)="submitEnquiry()">
+        <label><span>Name</span><input type="text" [(ngModel)]="enquiry.name" name="name" placeholder="Your Name" required /></label>
+        <label><span>Phone</span><input type="tel" [(ngModel)]="enquiry.phone" name="phone" placeholder="+91 90953 92629" required /></label>
+        <label><span>Email</span><input type="email" [(ngModel)]="enquiry.email" name="email" placeholder="name@example.com" required /></label>
+        <label><span>City</span><input type="text" [(ngModel)]="enquiry.city" name="city" placeholder="Bengaluru" required /></label>
+        <label>
+          <span>Interested Property</span>
+          <select [(ngModel)]="enquiry.property" name="property">
+            @for (p of properties(); track p.name) {
+              <option [value]="p.name">{{ p.name }}</option>
+            }
+          </select>
+        </label>
+        <label><span>Budget</span><input type="text" [(ngModel)]="enquiry.budget" name="budget" placeholder="e.g. ₹1.5 Cr" /></label>
+        <label class="full-span"><span>Message</span><textarea rows="4" [(ngModel)]="enquiry.message" name="message" placeholder="Details about your enquiry..."></textarea></label>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="btn-spinner"></span> Submitting...
+          } @else {
+            Submit Enquiry
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+@if (showThankYou()) {
+  <div class="toast animate-toast">✅ Enquiry received. Our sales team will contact you shortly.</div>
+}
+
+@if (showVisitModal()) {
+  <div class="modal-backdrop" (click)="closeVisitModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="closeVisitModal()">×</button>
+      <div class="eyebrow">Book Site Visit</div>
+      <h3>Schedule your private property tour.</h3>
+      <form class="modal-form" (ngSubmit)="submitVisit()">
+        <label><span>Name</span><input type="text" [(ngModel)]="visit.name" name="name" required /></label>
+        <label><span>Phone</span><input type="tel" [(ngModel)]="visit.phone" name="phone" required /></label>
+        <label>
+          <span>Property</span>
+          <select [(ngModel)]="visit.property" name="property" required>
+            @for (p of properties(); track p.name) {
+              <option [value]="p.name">{{ p.name }}</option>
+            }
+          </select>
+        </label>
+        <label><span>Preferred Date</span><input type="date" [(ngModel)]="visit.date" name="date" required /></label>
+        <label><span>Preferred Time</span><input type="time" [(ngModel)]="visit.time" name="time" required /></label>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="btn-spinner"></span> Booking...
+          } @else {
+            Confirm Booking
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+}

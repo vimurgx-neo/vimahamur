@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://estateos.example/</loc></url>
+  <url><loc>https://estateos.example/about</loc></url>
+  <url><loc>https://estateos.example/properties</loc></url>
+  <url><loc>https://estateos.example/buy</loc></url>
+  <url><loc>https://estateos.example/sell</loc></url>
+  <url><loc>https://estateos.example/blog</loc></url>
+  <url><loc>https://estateos.example/contact</loc></url>
+  <url><loc>https://estateos.example/faq</loc></url>
+</urlset>
