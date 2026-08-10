@@ -817,9 +817,10 @@
 }
 
 .highlights-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
   margin-bottom: 20px;
   padding-bottom: 16px;
   border-bottom: 1px dashed var(--border);
@@ -828,14 +829,15 @@
 .highlight-chip {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
+  gap: 4px;
+  font-size: 11px;
   color: var(--text);
   font-weight: 600;
+  white-space: nowrap;
 
   .chip-icon {
     color: var(--primary);
-    font-size: 10px;
+    font-size: 9px;
   }
 }
 
