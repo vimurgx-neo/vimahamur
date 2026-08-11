@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://estateos.example/sitemap.xml
+Sitemap: https://vimahamur.com/sitemap.xml

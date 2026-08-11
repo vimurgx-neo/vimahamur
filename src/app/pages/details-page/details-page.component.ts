@@ -3,7 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EstateOsService, PropertyListing } from '../../shared/services/estate-os.service';
+import { VimahamurService, PropertyListing } from '../../shared/services/vimahamur.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { AuthService } from '../../shared/services/auth.service';
 export class DetailsPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
-  protected readonly estateOsService = inject(EstateOsService);
+  protected readonly vimahamurService = inject(VimahamurService);
   protected readonly authService = inject(AuthService);
 
   protected readonly slug = this.route.snapshot.paramMap.get('slug') ?? '';
@@ -27,7 +27,7 @@ export class DetailsPageComponent {
     const loc = this.property()?.location ?? 'Tamil Nadu, India';
     return this.sanitizer.bypassSecurityTrustResourceUrl(`https://maps.google.com/maps?q=${encodeURIComponent(loc)}&t=&z=13&ie=UTF8&iwloc=&output=embed`);
   });
-  protected readonly relatedProperties = computed(() => this.estateOsService.properties().slice(0, 3));
+  protected readonly relatedProperties = computed(() => this.vimahamurService.properties().slice(0, 3));
 
   // Interactive Gallery Preview Popup
   protected readonly galleryPreviewImage = signal<string | null>(null);
@@ -77,11 +77,11 @@ export class DetailsPageComponent {
 
   constructor() {
     // Try to load property locally first, then fallback to API
-    const localProp = this.estateOsService.properties().find(p => p.slug === this.slug);
+    const localProp = this.vimahamurService.properties().find(p => p.slug === this.slug);
     if (localProp) {
       this.initializeProperty(localProp);
     } else {
-      this.estateOsService.fetchPropertyBySlug(this.slug).subscribe({
+      this.vimahamurService.fetchPropertyBySlug(this.slug).subscribe({
         next: (res) => this.initializeProperty(res.data),
         error: (err) => console.error('Failed to fetch property details', err)
       });
@@ -112,7 +112,7 @@ export class DetailsPageComponent {
   protected submitSiteVisit(): void {
     if (!this.visit.name || !this.visit.phone) return;
     this.isSubmitting.set(true);
-    this.estateOsService.createBooking({
+    this.vimahamurService.createBooking({
       customerName: this.visit.name,
       customerPhone: this.visit.phone,
       customerEmail: 'visitor@vimahamurluxuryproperty.local', // default
@@ -137,7 +137,7 @@ export class DetailsPageComponent {
   protected submitEnquiry(): void {
     if (!this.enquiry.name || !this.enquiry.phone) return;
     this.isSubmitting.set(true);
-    this.estateOsService.addEnquiry({
+    this.vimahamurService.addEnquiry({
       customer: this.enquiry.name,
       phone: this.enquiry.phone,
       email: this.enquiry.email,

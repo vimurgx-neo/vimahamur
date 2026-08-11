@@ -3,7 +3,7 @@ import { Component, inject, signal, computed, OnInit, AfterViewInit, ViewChild, 
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { EstateOsService } from '../../shared/services/estate-os.service';
+import { VimahamurService } from '../../shared/services/vimahamur.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 interface CityLocation {
@@ -26,16 +26,16 @@ interface CityLocation {
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  protected readonly estateOsService = inject(EstateOsService);
+  protected readonly vimahamurService = inject(VimahamurService);
   protected readonly authService = inject(AuthService);
   private readonly sanitizer = inject(DomSanitizer);
 
   @ViewChild('bgVideo', { static: false }) bgVideo!: ElementRef<HTMLVideoElement>;
 
-  protected readonly properties = this.estateOsService.properties;
-  protected readonly testimonials = this.estateOsService.testimonials;
-  protected readonly services = this.estateOsService.services;
-  protected readonly faqs = this.estateOsService.faqs;
+  protected readonly properties = this.vimahamurService.properties;
+  protected readonly testimonials = this.vimahamurService.testimonials;
+  protected readonly services = this.vimahamurService.services;
+  protected readonly faqs = this.vimahamurService.faqs;
 
   protected readonly cities: CityLocation[] = [
     {
@@ -139,7 +139,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   };
 
   ngOnInit(): void {
-    this.estateOsService.loadProperties();
+    this.vimahamurService.loadProperties();
   }
 
   ngAfterViewInit(): void {
@@ -191,7 +191,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   protected submitVisit(): void {
     if (!this.visit.name || !this.visit.phone) return;
     this.isSubmitting.set(true);
-    this.estateOsService.addEnquiry({
+    this.vimahamurService.addEnquiry({
       customer: this.visit.name,
       phone: this.visit.phone,
       property: this.visit.property,
@@ -212,7 +212,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   protected submitEnquiry(): void {
     if (!this.enquiry.name || !this.enquiry.phone) return;
     this.isSubmitting.set(true);
-    this.estateOsService.addEnquiry({
+    this.vimahamurService.addEnquiry({
       customer: this.enquiry.name,
       phone: this.enquiry.phone,
       email: this.enquiry.email,

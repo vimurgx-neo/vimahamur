@@ -7,7 +7,7 @@ import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.mode
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly storageKey = 'estateos-auth-user';
+  private readonly storageKey = 'vimahamur-auth-user';
 
   readonly currentUser = signal<AuthResponse | null>(this.readStoredUser());
   readonly currentRole = computed(() => this.currentUser()?.role ?? null);

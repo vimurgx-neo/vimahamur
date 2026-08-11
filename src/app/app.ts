@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Event, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthService } from './shared/services/auth.service';
-import { EstateOsService } from './shared/services/estate-os.service';
+import { VimahamurService } from './shared/services/vimahamur.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ export class App {
   private readonly titleService = inject(Title);
   private readonly metaService = inject(Meta);
   protected readonly authService = inject(AuthService);
-  protected readonly estateService = inject(EstateOsService);
+  protected readonly estateService = inject(VimahamurService);
 
   protected readonly title = signal('Vimahamur Luxury Property');
   protected readonly isAdminRoute = signal(false);

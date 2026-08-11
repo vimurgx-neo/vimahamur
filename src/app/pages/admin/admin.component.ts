@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EstateOsService, PropertyListing, LeadCard, Booking, PropertyMapper } from '../../shared/services/estate-os.service';
+import { VimahamurService, PropertyListing, LeadCard, Booking, PropertyMapper } from '../../shared/services/vimahamur.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { AuthService } from '../../shared/services/auth.service';
   styleUrl: './admin.component.scss',
 })
 export class AdminComponent implements OnInit {
-  private readonly estateService = inject(EstateOsService);
+  private readonly estateService = inject(VimahamurService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 

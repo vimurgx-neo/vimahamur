@@ -123,14 +123,6 @@
                 <h3>{{ activeCity().name }} Corridor</h3>
                 <p class="city-description">{{ activeCity().description }}</p>
 
-                <div class="highlights-grid">
-                  @for (h of activeCity().highlights; track h) {
-                    <div class="highlight-chip">
-                      <span class="chip-icon">✦</span>
-                      <span class="chip-text">{{ h }}</span>
-                    </div>
-                  }
-                </div>
 
                 <div class="office-info">
                   <div class="info-row">

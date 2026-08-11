@@ -47,3 +47,5 @@ Thumbs.db
 /server/dist/
 /server/uploads/
 .env
+/mongodb_data
+

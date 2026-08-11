@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { map } from 'rxjs';
-import { EstateOsService, PropertyListing } from '../../shared/services/estate-os.service';
+import { VimahamurService, PropertyListing } from '../../shared/services/vimahamur.service';
 import { AuthService } from '../../shared/services/auth.service';
 
 interface CityLocation {
@@ -29,7 +29,7 @@ interface CityLocation {
 })
 export class MarketingPageComponent {
   private readonly route = inject(ActivatedRoute);
-  private readonly estateOsService = inject(EstateOsService);
+  private readonly vimahamurService = inject(VimahamurService);
   protected readonly authService = inject(AuthService);
   private readonly sanitizer = inject(DomSanitizer);
 
@@ -37,11 +37,11 @@ export class MarketingPageComponent {
     this.route.data.pipe(map(data => (data['page'] as string | undefined) ?? 'properties')),
     { initialValue: (this.route.snapshot.data['page'] as string | undefined) ?? 'properties' }
   );
-  protected readonly properties = this.estateOsService.properties;
-  protected readonly blogs = this.estateOsService.blogs;
-  protected readonly faqs = this.estateOsService.faqs;
+  protected readonly properties = this.vimahamurService.properties;
+  protected readonly blogs = this.vimahamurService.blogs;
+  protected readonly faqs = this.vimahamurService.faqs;
   protected readonly featuredProjects = computed(() => this.properties().filter((p) => p.featured));
-  protected readonly compareProperties = this.estateOsService.properties;
+  protected readonly compareProperties = this.vimahamurService.properties;
 
   protected readonly cities: CityLocation[] = [
     {
@@ -201,7 +201,7 @@ export class MarketingPageComponent {
   protected submitEnquiry(): void {
     if (!this.enquiry.name || !this.enquiry.phone) return;
     this.isSubmitting.set(true);
-    this.estateOsService.addEnquiry({
+    this.vimahamurService.addEnquiry({
       customer: this.enquiry.name,
       phone: this.enquiry.phone,
       email: this.enquiry.email,
