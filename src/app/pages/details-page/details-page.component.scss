@@ -572,29 +572,56 @@
   }
 }
 
+@media (max-width: 768px) {
+  .details-shell {
+    padding: 32px 0 48px;
+  }
+  .primary-showcase {
+    height: 300px;
+  }
+}
+
 @media (max-width: 640px) {
   .details-card,
   .sidebar-card,
   .related-list-card,
   .mortgage-calculator-box {
-    padding: 24px;
+    padding: 20px;
+  }
+  
+  .details-card h1 {
+    font-size: 1.8rem;
+  }
+  
+  .primary-showcase {
+    height: 220px;
+    margin-bottom: 20px;
   }
   
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .gallery-thumb {
+    height: 90px;
   }
   
   .calculator-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   
   .amenities-grid,
   .nearby-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
   
   .specs-row {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
   }
 }

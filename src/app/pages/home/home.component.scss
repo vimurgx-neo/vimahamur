@@ -1143,6 +1143,55 @@
     width: 104px;
     height: 104px;
   }
+
+  .why-choose-us,
+  .feature-section,
+  .service-section,
+  .about-section,
+  .cta-calendar-section,
+  .testimonial-section,
+  .faq-section,
+  .contact-section {
+    padding: 48px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-grid {
+    padding-top: 100px;
+    padding-bottom: 60px;
+    gap: 24px;
+  }
+  .hero-copy h1 {
+    font-size: 2.25rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 24px;
+  }
+  .place-card {
+    height: 300px;
+  }
+  .property-image {
+    height: 220px;
+  }
+  .property-body {
+    padding: 20px;
+  }
+  .why-choose-us,
+  .feature-section,
+  .service-section,
+  .about-section,
+  .cta-calendar-section,
+  .testimonial-section,
+  .faq-section,
+  .contact-section {
+    padding: 40px 0;
+  }
+  .faq-trigger {
+    padding: 16px 20px;
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1151,6 +1200,11 @@
   .services-grid,
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .place-card {
+    height: 260px;
   }
   
   .glass-form,
@@ -1159,7 +1213,7 @@
   }
   
   .hero-shell {
-    padding-top: 140px;
+    padding-top: 80px;
   }
 
   .trust-indicators-row {
@@ -1180,6 +1234,32 @@
     right: 6px;
     width: 72px;
     height: 72px;
+  }
+
+  .glass-card {
+    padding: 24px 16px;
+  }
+  .stat-card strong {
+    font-size: 28px;
+  }
+  
+  .cta-grid-wrapper {
+    gap: 32px;
+  }
+  .cta-info p {
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  
+  .testimonial-glass-card {
+    padding: 32px 20px;
+  }
+  .quote-text {
+    font-size: 1.1rem;
+  }
+  
+  .map-details-card {
+    padding: 16px;
   }
 }
 

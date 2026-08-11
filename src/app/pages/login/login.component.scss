@@ -425,3 +425,16 @@
     }
   }
 }
+
+@media (max-width: 480px) {
+  .auth-section {
+    padding: 20px 12px;
+  }
+  .auth-card {
+    padding: 20px 16px;
+  }
+  .form-row-two {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

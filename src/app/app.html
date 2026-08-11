@@ -30,8 +30,55 @@
           <a routerLink="/register" class="btn btn-primary btn-xs nav-register-btn">Create Account</a>
         }
       </div>
+
+      <!-- Hamburger toggle button visible on mobile -->
+      <button class="mobile-menu-toggle" [class.open]="showMobileMenu()" (click)="toggleMobileMenu()" aria-label="Toggle navigation menu">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
     </div>
   </header>
+
+  <!-- Mobile Drawer Backdrop Overlay -->
+  <div class="mobile-menu-drawer-backdrop" [class.open]="showMobileMenu()" (click)="toggleMobileMenu()"></div>
+
+  <!-- Mobile Navigation Menu Drawer -->
+  <div class="mobile-menu-drawer" [class.open]="showMobileMenu()">
+    <button class="mobile-menu-close" (click)="toggleMobileMenu()">&times;</button>
+    <div class="mobile-menu-content">
+      <nav class="mobile-nav-links">
+        <a routerLink="/" routerLinkActive="active-nav" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMobileMenu()">Home</a>
+        <a routerLink="/properties" routerLinkActive="active-nav" (click)="toggleMobileMenu()">Properties</a>
+        <a routerLink="/contact" routerLinkActive="active-nav" (click)="toggleMobileMenu()">Contact</a>
+      </nav>
+      
+      <div class="mobile-menu-divider"></div>
+      
+      <div class="mobile-menu-user-actions">
+        @if (isAuthenticated() && currentUser()?.userName) {
+          <div class="mobile-user-info">
+            <span class="user-greeting">👤 {{ currentUser()?.userName }}</span>
+          </div>
+          
+          <button class="nav-btn-saved mobile-saved-btn" (click)="toggleSavedModal(); toggleMobileMenu()">
+            ❤️ Saved @if (savedProperties().length > 0) { <span class="badge">{{ savedProperties().length }}</span> }
+          </button>
+          
+          @if (currentUser()?.role === 'Admin' || currentUser()?.role === 'SuperAdmin') {
+            <a routerLink="/admin/dashboard" class="btn btn-outline nav-admin-btn" (click)="toggleMobileMenu()">🛡️ Admin Panel</a>
+          }
+
+          <button type="button" class="btn btn-outline logout-btn" (click)="logout(); toggleMobileMenu()">Sign Out</button>
+        } @else {
+          <div class="mobile-auth-buttons">
+            <a routerLink="/login" class="btn btn-outline mobile-signin-btn" (click)="toggleMobileMenu()">Sign In</a>
+            <a routerLink="/register" class="btn btn-primary mobile-register-btn" (click)="toggleMobileMenu()">Register</a>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
 }
 
 <main>

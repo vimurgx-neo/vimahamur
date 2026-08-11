@@ -26,6 +26,7 @@ export class App {
   protected readonly isScrolled = signal(false);
 
   protected readonly showSavedModal = signal(false);
+  protected readonly showMobileMenu = signal(false);
 
   protected readonly currentUser = this.authService.currentUser;
   protected readonly isAuthenticated = this.authService.isAuthenticated;
@@ -51,8 +52,13 @@ export class App {
       if (event instanceof NavigationEnd) {
         this.syncRouteFlags(event.urlAfterRedirects);
         this.applySeoMetadata(event.urlAfterRedirects);
+        this.showMobileMenu.set(false);
       }
     });
+  }
+
+  protected toggleMobileMenu(): void {
+    this.showMobileMenu.update(v => !v);
   }
 
   protected toggleSavedModal(): void {
