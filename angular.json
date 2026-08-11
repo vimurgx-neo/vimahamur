@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "estateos-frontend": {
+    "vimahamur-luxury-properties": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "estateos-frontend:build:production"
+              "buildTarget": "vimahamur-luxury-properties:build:production"
             },
             "development": {
-              "buildTarget": "estateos-frontend:build:development"
+              "buildTarget": "vimahamur-luxury-properties:build:development"
             }
           },
           "defaultConfiguration": "development"
