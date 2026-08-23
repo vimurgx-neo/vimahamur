@@ -248,37 +248,25 @@
           <!-- Left inputs column -->
           <div class="form-column">
             <label>
-              <div class="label-heading-row">
-                <span class="label-title">Property Name</span>
-                <span class="required-pill">Required</span>
-              </div>
+              <span class="label-title">Property Name</span>
               <input type="text" [(ngModel)]="formModel.name" name="name"
                 placeholder="e.g. Emerald Haven Plots" />
             </label>
 
             <div class="form-row-two">
               <label>
-                <div class="label-heading-row">
-                  <span class="label-title">Price Label</span>
-                  <span class="optional-pill">Optional</span>
-                </div>
+                <span class="label-title">Price Label</span>
                 <input type="text" [(ngModel)]="formModel.price" name="price" placeholder="e.g. ₹45 Lakh" />
               </label>
               <label>
-                <div class="label-heading-row">
-                  <span class="label-title">Numeric Value (Lakhs)</span>
-                  <span class="optional-pill">Optional</span>
-                </div>
+                <span class="label-title">Numeric Value (Lakhs)</span>
                 <input type="number" [(ngModel)]="formModel.priceValue" name="priceValue" placeholder="e.g. 45" />
               </label>
             </div>
 
             <div class="form-row-two">
               <label>
-                <div class="label-heading-row">
-                  <span class="label-title">Category</span>
-                  <span class="optional-pill">Optional</span>
-                </div>
+                <span class="label-title">Category</span>
                 <select [(ngModel)]="formModel.category" name="category">
                   <option value="Luxury">Luxury</option>
                   <option value="Luxury Villas">Luxury Villas</option>
@@ -288,37 +276,25 @@
                 </select>
               </label>
               <label>
-                <div class="label-heading-row">
-                  <span class="label-title">Area Size</span>
-                  <span class="optional-pill">Optional</span>
-                </div>
+                <span class="label-title">Area Size</span>
                 <input type="text" [(ngModel)]="formModel.area" name="area" placeholder="e.g. 1,500 sq ft" />
               </label>
             </div>
 
             <label>
-              <div class="label-heading-row">
-                <span class="label-title">Location</span>
-                <span class="optional-pill">Optional</span>
-              </div>
+              <span class="label-title">Location</span>
               <input type="text" [(ngModel)]="formModel.location" name="location"
                 placeholder="e.g. Bypass Road, Salem" />
             </label>
 
             <label>
-              <div class="label-heading-row">
-                <span class="label-title">Sub-type Name</span>
-                <span class="optional-pill">Optional</span>
-              </div>
+              <span class="label-title">Sub-type Name</span>
               <input type="text" [(ngModel)]="formModel.type" name="type"
                 placeholder="e.g. Premium Villa Plots" />
             </label>
 
             <label>
-              <div class="label-heading-row">
-                <span class="label-title">Description</span>
-                <span class="optional-pill">Optional</span>
-              </div>
+              <span class="label-title">Description</span>
               <textarea rows="3" [(ngModel)]="formModel.description" name="description"
                 placeholder="Describe the property highlights, design guidelines, and location advantages..."></textarea>
             </label>
@@ -334,10 +310,7 @@
           <div class="form-column">
             <!-- PRIMARY IMAGE UPLOADER -->
             <div class="upload-container-box">
-              <div class="label-heading-row">
-                <span class="field-label">Primary Cover Image</span>
-                <span class="optional-pill">Optional</span>
-              </div>
+              <span class="field-label">Primary Cover Image</span>
               <div class="upload-field-layout">
                 @if (formModel.image) {
                 <div class="image-preview-wrapper">
