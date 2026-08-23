@@ -4,8 +4,12 @@ import { Router, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
-import { requireAuth, AuthRequest } from '../middlewares/auth.middleware.js';
+import { requireAuth, requireRole, AuthRequest } from '../middlewares/auth.middleware.js';
 import { UserModel } from '../models/user.model.js';
+import { PropertyModel } from '../models/property.model.js';
+import { BlogModel } from '../models/blog.model.js';
+import { BookingModel } from '../models/booking.model.js';
+import { LeadModel } from '../models/lead.model.js';
 import { OAuth2Client } from 'google-auth-library';
 
 export const authRouter = Router();
@@ -287,6 +291,19 @@ authRouter.delete('/profile/saved-properties/:propertyId', requireAuth, async (r
     
     await user.populate('savedProperties');
     res.json({ message: 'Property removed from saved list.', data: user.savedProperties });
+  } catch (e) {
+    next(e);
+  }
+});
+
+authRouter.post('/clear-dummy-data', requireAuth, requireRole('SuperAdmin'), async (req: AuthRequest, res: any, next: any) => {
+  try {
+    await PropertyModel.deleteMany({});
+    await BlogModel.deleteMany({});
+    await BookingModel.deleteMany({});
+    await LeadModel.deleteMany({});
+    await UserModel.deleteMany({ role: 'Customer' });
+    res.json({ message: 'Dummy data successfully cleared from database!' });
   } catch (e) {
     next(e);
   }

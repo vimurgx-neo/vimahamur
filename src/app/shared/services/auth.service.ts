@@ -104,6 +104,10 @@ export class AuthService {
     );
   }
 
+  clearDummyData(): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${environment.apiUrl}/auth/clear-dummy-data`, {});
+  }
+
   logout(): void {
     localStorage.removeItem(this.storageKey);
     sessionStorage.removeItem(this.storageKey);

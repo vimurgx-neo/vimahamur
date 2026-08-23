@@ -95,6 +95,28 @@ export class AdminComponent implements OnInit {
     this.estateService.loadBookings();
   }
 
+  protected readonly isSuperAdmin = computed(() => this.authService.currentUser()?.role === 'SuperAdmin');
+  protected isClearingDb = signal(false);
+
+  protected clearDummyData(): void {
+    if (!confirm('Are you absolutely sure you want to clear all dummy seed data? This will permanently delete all properties, blogs, leads, and bookings (Admin/SuperAdmin accounts will be preserved). This action cannot be undone.')) {
+      return;
+    }
+    
+    this.isClearingDb.set(true);
+    this.authService.clearDummyData().subscribe({
+      next: (res) => {
+        this.isClearingDb.set(false);
+        alert(res.message);
+        window.location.reload();
+      },
+      error: (err) => {
+        this.isClearingDb.set(false);
+        alert(err.error?.message ?? 'Failed to clear dummy data.');
+      }
+    });
+  }
+
   protected logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
