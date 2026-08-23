@@ -426,6 +426,53 @@
   }
 }
 
+/* SLIDING FORMS TRANSITION */
+.auth-slider-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  max-height: 380px; /* Default height for login form */
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 20px;
+  
+  &.register-active {
+    max-height: 520px; /* Height for register form (taller) */
+  }
+}
+
+.auth-slider {
+  display: flex;
+  width: 200%;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-slider-container.register-active .auth-slider {
+  transform: translateX(-50%);
+}
+
+.auth-slide {
+  width: 50%;
+  padding: 0 4px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.auth-slider-container:not(.register-active) .register-slide {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
+}
+
+.auth-slider-container.register-active .login-slide {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
+}
+
 @media (max-width: 480px) {
   .auth-section {
     padding: 20px 12px;
@@ -436,5 +483,12 @@
   .form-row-two {
     grid-template-columns: 1fr;
     gap: 12px;
+  }
+  .auth-slider-container {
+    max-height: 385px;
+    
+    &.register-active {
+      max-height: 615px; /* Taller on mobile because form columns stack */
+    }
   }
 }

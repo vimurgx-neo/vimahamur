@@ -26,16 +26,6 @@
         </button>
       </div>
 
-      <div class="auth-header">
-        @if (!isRegisterMode()) {
-          <h3>Welcome Back</h3>
-          <p>Access your real estate portfolio, saved properties, and admin panel.</p>
-        } @else {
-          <h3>Join Vimahamur</h3>
-          <p>Create an account to save properties, schedule site visits, and get exclusive updates.</p>
-        }
-      </div>
-
       @if (authService.isAuthenticated()) {
         <div class="banner info-banner">
           👤 Currently signed in as <strong>{{ authService.currentUser()?.userName }}</strong> ({{ authService.currentUser()?.role }}).
@@ -55,125 +45,140 @@
         </div>
       }
 
-      <!-- LOGIN FORM -->
-      @if (!isRegisterMode()) {
-        <form class="auth-form" (ngSubmit)="submitLogin()">
+      <!-- SLIDING FORMS CONTAINER -->
+      <div class="auth-slider-container" [class.register-active]="isRegisterMode()">
+        <div class="auth-slider">
+          
+          <!-- Slide 1: Login -->
+          <div class="auth-slide login-slide">
+            <div class="auth-header">
+              <h3>Welcome Back</h3>
+              <p>Access your real estate portfolio, saved properties, and admin panel.</p>
+            </div>
+            
+            <form class="auth-form" (ngSubmit)="submitLogin()">
+              <label>
+                <span>Email Address *</span>
+                <input 
+                  type="email" 
+                  [(ngModel)]="credentials.email" 
+                  name="email" 
+                  placeholder="admin@vimahamur.local" 
+                  required 
+                  autocomplete="email" />
+              </label>
 
+              <label>
+                <span>Password *</span>
+                <input 
+                  type="password" 
+                  [(ngModel)]="credentials.password" 
+                  name="password" 
+                  placeholder="••••••••" 
+                  required 
+                  autocomplete="current-password" />
+              </label>
 
-          <label>
-            <span>Email Address *</span>
-            <input 
-              type="email" 
-              [(ngModel)]="credentials.email" 
-              name="email" 
-              placeholder="admin@vimahamur.local" 
-              required 
-              autocomplete="email" />
-          </label>
+              <div class="form-actions-row">
+                <label class="remember-me">
+                  <input type="checkbox" [(ngModel)]="credentials.rememberMe" name="rememberMe" />
+                  <span>Remember me</span>
+                </label>
+              </div>
 
-          <label>
-            <span>Password *</span>
-            <input 
-              type="password" 
-              [(ngModel)]="credentials.password" 
-              name="password" 
-              placeholder="••••••••" 
-              required 
-              autocomplete="current-password" />
-          </label>
+              <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+                @if (isSubmitting()) {
+                  <span class="btn-spinner"></span> Authenticating...
+                } @else {
+                  Sign In ➔
+                }
+              </button>
 
-          <div class="form-actions-row">
-            <label class="remember-me">
-              <input type="checkbox" [(ngModel)]="credentials.rememberMe" name="rememberMe" />
-              <span>Remember me</span>
-            </label>
+              <div class="auth-toggle-prompt">
+                Don't have an account yet? <button type="button" class="link-btn" (click)="setMode(true)">Create Account</button>
+              </div>
+            </form>
           </div>
 
-          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
-            @if (isSubmitting()) {
-              <span class="btn-spinner"></span> Authenticating...
-            } @else {
-              Sign In ➔
-            }
-          </button>
+          <!-- Slide 2: Register -->
+          <div class="auth-slide register-slide">
+            <div class="auth-header">
+              <h3>Join Vimahamur</h3>
+              <p>Create an account to save properties, schedule site visits, and get exclusive updates.</p>
+            </div>
+            
+            <form class="auth-form" (ngSubmit)="submitRegister()">
+              <label>
+                <span>Full Name *</span>
+                <input 
+                  type="text" 
+                  [(ngModel)]="registerData.name" 
+                  name="name" 
+                  placeholder="e.g. Aparna Rao" 
+                  required 
+                  autocomplete="name" />
+              </label>
 
-          <div class="auth-toggle-prompt">
-            Don't have an account yet? <button type="button" class="link-btn" (click)="setMode(true)">Create Account</button>
+              <label>
+                <span>Email Address *</span>
+                <input 
+                  type="email" 
+                  [(ngModel)]="registerData.email" 
+                  name="regEmail" 
+                  placeholder="aparna@example.com" 
+                  required 
+                  autocomplete="email" />
+              </label>
+
+              <label>
+                <span>Phone Number</span>
+                <input 
+                  type="tel" 
+                  [(ngModel)]="registerData.phone" 
+                  name="phone" 
+                  placeholder="+91 98765 43210" 
+                  autocomplete="tel" />
+              </label>
+
+              <div class="form-row-two">
+                <label>
+                  <span>Password *</span>
+                  <input 
+                    type="password" 
+                    [(ngModel)]="registerData.password" 
+                    name="regPassword" 
+                    placeholder="Min 6 chars" 
+                    required 
+                    autocomplete="new-password" />
+                </label>
+                <label>
+                  <span>Confirm *</span>
+                  <input 
+                    type="password" 
+                    [(ngModel)]="registerData.confirmPassword" 
+                    name="confirmPassword" 
+                    placeholder="Repeat password" 
+                    required 
+                    autocomplete="new-password" />
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+                @if (isSubmitting()) {
+                  <span class="btn-spinner"></span> Creating Account...
+                } @else {
+                  Register & Sign In ➔
+                }
+              </button>
+
+              <div class="auth-toggle-prompt">
+                Already have an account? <button type="button" class="link-btn" (click)="setMode(false)">Sign In</button>
+              </div>
+            </form>
           </div>
-        </form>
-      }
 
-      <!-- SIGN UP (REGISTER) FORM -->
-      @if (isRegisterMode()) {
-        <form class="auth-form" (ngSubmit)="submitRegister()">
-          <label>
-            <span>Full Name *</span>
-            <input 
-              type="text" 
-              [(ngModel)]="registerData.name" 
-              name="name" 
-              placeholder="e.g. Aparna Rao" 
-              required 
-              autocomplete="name" />
-          </label>
-
-          <label>
-            <span>Email Address *</span>
-            <input 
-              type="email" 
-              [(ngModel)]="registerData.email" 
-              name="regEmail" 
-              placeholder="aparna@example.com" 
-              required 
-              autocomplete="email" />
-          </label>
-
-          <label>
-            <span>Phone Number</span>
-            <input 
-              type="tel" 
-              [(ngModel)]="registerData.phone" 
-              name="phone" 
-              placeholder="+91 98765 43210" 
-              autocomplete="tel" />
-          </label>
-
-          <div class="form-row-two">
-            <label>
-              <span>Password *</span>
-              <input 
-                type="password" 
-                [(ngModel)]="registerData.password" 
-                name="regPassword" 
-                placeholder="Min 6 chars" 
-                required 
-                autocomplete="new-password" />
-            </label>
-            <label>
-              <span>Confirm *</span>
-              <input 
-                type="password" 
-                [(ngModel)]="registerData.confirmPassword" 
-                name="confirmPassword" 
-                placeholder="Repeat password" 
-                required 
-                autocomplete="new-password" />
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
-            @if (isSubmitting()) {
-              <span class="btn-spinner"></span> Creating Account...
-            } @else {
-              Register & Sign In ➔
-            }
-          </button>
-
-          <div class="auth-toggle-prompt">
-            Already have an account? <button type="button" class="link-btn" (click)="setMode(false)">Sign In</button>
-          </div>
-        </form>
-      }
+        </div>
+      </div>
 
       <div class="social-auth-divider">
         <span class="divider-line"></span>
