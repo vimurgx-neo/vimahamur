@@ -4,11 +4,12 @@ import { Event, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutle
 import { Meta, Title } from '@angular/platform-browser';
 import { AuthService } from './shared/services/auth.service';
 import { VimahamurService } from './shared/services/vimahamur.service';
+import { LuxuryPopupComponent } from './shared/components/luxury-popup/luxury-popup.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LuxuryPopupComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

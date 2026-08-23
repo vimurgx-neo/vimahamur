@@ -7,6 +7,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { map } from 'rxjs';
 import { VimahamurService, PropertyListing } from '../../shared/services/vimahamur.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 interface CityLocation {
   id: string;
@@ -198,30 +199,63 @@ export class MarketingPageComponent {
     return name.toLowerCase().replaceAll(' ', '-');
   }
 
+  private readonly notificationService = inject(NotificationService);
+
+  private validatePhone(phone: string): boolean {
+    const cleaned = phone.replace(/[\s\-()]/g, '');
+    return /^[+]?[0-9]{10,15}$/.test(cleaned);
+  }
+
+  private validateEmail(email: string): boolean {
+    if (!email) return true;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
   protected submitEnquiry(): void {
-    if (!this.enquiry.name || !this.enquiry.phone) return;
+    const name = this.enquiry.name.trim();
+    const phone = this.enquiry.phone.trim();
+    const email = this.enquiry.email.trim();
+
+    if (!name || name.length < 2) {
+      this.notificationService.showError('Validation Failed', 'Please enter your full name (at least 2 characters).');
+      return;
+    }
+
+    if (!this.validatePhone(phone)) {
+      this.notificationService.showError('Invalid Phone Number', 'Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    if (email && !this.validateEmail(email)) {
+      this.notificationService.showError('Invalid Email Address', 'Please provide a valid email format.');
+      return;
+    }
+
     this.isSubmitting.set(true);
     this.vimahamurService.addEnquiry({
-      customer: this.enquiry.name,
-      phone: this.enquiry.phone,
-      email: this.enquiry.email,
+      customer: name,
+      phone: phone,
+      email: email,
       property: this.enquiry.property || 'General Enquiry',
       message: this.enquiry.city ? `Location: ${this.enquiry.city}. ${this.enquiry.message}` : this.enquiry.message,
       source: this.page() === 'contact' ? 'Contact Page Enquiry' : `Marketing page (${this.page()})`
     }).subscribe({
       next: () => {
         this.isSubmitting.set(false);
-        this.showConfirmation.set(true);
+        this.notificationService.showSuccess(
+          'Message Sent Successfully! 🌟',
+          `Thank you ${name}. Our regional real estate specialists will review your enquiry and contact you promptly.`
+        );
         this.enquiry.name = '';
         this.enquiry.phone = '';
         this.enquiry.email = '';
         this.enquiry.city = '';
         this.enquiry.property = 'Meridian Heights';
         this.enquiry.message = '';
-        window.setTimeout(() => this.showConfirmation.set(false), 4000);
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting.set(false);
+        this.notificationService.showError('Submission Failed', err.error?.message ?? 'Could not send message. Please try again.');
       }
     });
   }
@@ -244,13 +278,17 @@ export class MarketingPageComponent {
     event.preventDefault();
     if (!propertyId) return;
     if (!this.authService.isAuthenticated()) {
-      alert('Please sign in to save properties to your account.');
+      this.notificationService.showWarning('Sign In Required', 'Please sign in to save properties to your bookmarks.');
       return;
     }
     if (this.isSaved(propertyId)) {
-      this.authService.removeFromSavedProperties(propertyId).subscribe();
+      this.authService.removeFromSavedProperties(propertyId).subscribe({
+        next: () => this.notificationService.showInfo('Property Removed', 'Listing removed from your saved bookmarks.')
+      });
     } else {
-      this.authService.addToSavedProperties(propertyId).subscribe();
+      this.authService.addToSavedProperties(propertyId).subscribe({
+        next: () => this.notificationService.showSuccess('Property Saved! ❤️', 'Listing added to your saved collection.')
+      });
     }
   }
 }

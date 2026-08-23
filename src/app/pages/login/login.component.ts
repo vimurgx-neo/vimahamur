@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment';
 
 declare const google: any;
 
+import { NotificationService } from '../../shared/services/notification.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -19,6 +21,7 @@ export class LoginComponent implements OnInit {
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly notificationService = inject(NotificationService);
 
   protected isRegisterMode = signal(false);
   protected errorMessage = signal<string | null>(null);
@@ -28,7 +31,7 @@ export class LoginComponent implements OnInit {
   protected logout(): void {
     this.authService.logout();
     this.errorMessage.set(null);
-    this.successMessage.set('Signed out cleanly.');
+    this.notificationService.showInfo('Signed Out', 'You have been signed out cleanly.');
   }
 
   // Login Form Model
@@ -96,11 +99,14 @@ export class LoginComponent implements OnInit {
     this.authService.loginWithGoogle(token).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
+        this.notificationService.showSuccess('Welcome Back! ✨', `Logged in as ${res.userName || res.email}`);
         this.redirectByRole(res.role);
       },
       error: (err) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(err.error?.message ?? 'Google authentication failed.');
+        const msg = err.error?.message ?? 'Google authentication failed.';
+        this.errorMessage.set(msg);
+        this.notificationService.showError('Authentication Error', msg);
       }
     });
   }
@@ -112,39 +118,59 @@ export class LoginComponent implements OnInit {
   }
 
   protected submitLogin(): void {
-    if (!this.credentials.email || !this.credentials.password) {
-      this.errorMessage.set('Please enter both email and password.');
+    const email = this.credentials.email.trim();
+    const password = this.credentials.password;
+
+    if (!email || !password) {
+      const msg = 'Please enter both email and password.';
+      this.errorMessage.set(msg);
+      this.notificationService.showError('Validation Error', msg);
       return;
     }
 
     this.errorMessage.set(null);
     this.isSubmitting.set(true);
 
-    this.authService.login(this.credentials).subscribe({
+    this.authService.login({ ...this.credentials, email }).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
+        this.notificationService.showSuccess('Welcome! 🌟', `Signed in successfully as ${res.userName || res.email}`);
         this.redirectByRole(res.role);
       },
       error: (err) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(err.error?.message ?? 'Invalid email or password.');
+        const msg = err.error?.message ?? 'Invalid email or password.';
+        this.errorMessage.set(msg);
+        this.notificationService.showError('Sign In Failed', msg);
       }
     });
   }
 
   protected submitRegister(): void {
-    if (!this.registerData.name || !this.registerData.email || !this.registerData.password) {
-      this.errorMessage.set('Please fill out all required fields.');
+    const name = this.registerData.name.trim();
+    const email = this.registerData.email.trim();
+    const phone = this.registerData.phone.trim();
+    const password = this.registerData.password;
+    const confirm = this.registerData.confirmPassword;
+
+    if (!name || !email || !password) {
+      const msg = 'Please fill in all required fields (Name, Email, Password).';
+      this.errorMessage.set(msg);
+      this.notificationService.showError('Validation Error', msg);
       return;
     }
 
-    if (this.registerData.password !== this.registerData.confirmPassword) {
-      this.errorMessage.set('Passwords do not match.');
+    if (password !== confirm) {
+      const msg = 'Passwords do not match.';
+      this.errorMessage.set(msg);
+      this.notificationService.showError('Password Mismatch', msg);
       return;
     }
 
-    if (this.registerData.password.length < 6) {
-      this.errorMessage.set('Password must be at least 6 characters.');
+    if (password.length < 6) {
+      const msg = 'Password must be at least 6 characters.';
+      this.errorMessage.set(msg);
+      this.notificationService.showError('Password Too Short', msg);
       return;
     }
 
@@ -152,21 +178,23 @@ export class LoginComponent implements OnInit {
     this.isSubmitting.set(true);
 
     this.authService.register({
-      name: this.registerData.name,
-      email: this.registerData.email,
-      phone: this.registerData.phone,
-      password: this.registerData.password
+      name,
+      email,
+      phone,
+      password
     }).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
-        this.successMessage.set('Account created successfully! Welcome to Vimahamur Luxury Property.');
+        this.notificationService.showSuccess('Account Created! 🎉', 'Welcome to Vimahamur Luxury Properties.');
         setTimeout(() => {
           this.redirectByRole(res.role);
-        }, 800);
+        }, 600);
       },
       error: (err) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(err.error?.message ?? 'Registration failed. Please check your details.');
+        const msg = err.error?.message ?? 'Registration failed. Please check your details.';
+        this.errorMessage.set(msg);
+        this.notificationService.showError('Registration Failed', msg);
       }
     });
   }

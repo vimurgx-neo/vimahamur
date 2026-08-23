@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VimahamurService, PropertyListing } from '../../shared/services/vimahamur.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-details-page',
@@ -109,53 +110,107 @@ export class DetailsPageComponent {
     this.downPaymentInput.set(Math.round(rupees * 0.20));
   }
 
+  private readonly notificationService = inject(NotificationService);
+
+  private validatePhone(phone: string): boolean {
+    const cleaned = phone.replace(/[\s\-()]/g, '');
+    return /^[+]?[0-9]{10,15}$/.test(cleaned);
+  }
+
+  private validateEmail(email: string): boolean {
+    if (!email) return true;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
   protected submitSiteVisit(): void {
-    if (!this.visit.name || !this.visit.phone) return;
+    const name = this.visit.name.trim();
+    const phone = this.visit.phone.trim();
+
+    if (!name || name.length < 2) {
+      this.notificationService.showError('Validation Failed', 'Please enter your full name (at least 2 characters).');
+      return;
+    }
+
+    if (!this.validatePhone(phone)) {
+      this.notificationService.showError('Invalid Phone Number', 'Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    if (!this.visit.date) {
+      this.notificationService.showError('Date Required', 'Please select a preferred date for your private tour.');
+      return;
+    }
+
     this.isSubmitting.set(true);
     this.vimahamurService.createBooking({
-      customerName: this.visit.name,
-      customerPhone: this.visit.phone,
-      customerEmail: 'visitor@vimahamurluxuryproperty.local', // default
-      propertyName: this.visit.property,
+      customerName: name,
+      customerPhone: phone,
+      customerEmail: 'visitor@vimahamurluxuryproperty.local',
+      propertyName: this.visit.property || this.property()?.name || 'Vimahamur Luxury Property',
       propertySlug: this.slug,
-      preferredDate: this.visit.date || new Date().toISOString(),
+      preferredDate: this.visit.date,
       preferredTime: this.visit.time
     }).subscribe({
       next: () => {
         this.isSubmitting.set(false);
-        this.showVisitConfirmation.set(true);
+        this.notificationService.showSuccess(
+          'Private Site Tour Requested! ✨',
+          `Thank you ${name}. Our layout specialist will coordinate with you for ${this.property()?.name || 'this property'}.`
+        );
         this.visit.name = '';
         this.visit.phone = '';
-        window.setTimeout(() => this.showVisitConfirmation.set(false), 4000);
+        this.visit.date = '';
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting.set(false);
+        this.notificationService.showError('Booking Error', err.error?.message ?? 'Could not schedule tour. Please try again.');
       }
     });
   }
 
   protected submitEnquiry(): void {
-    if (!this.enquiry.name || !this.enquiry.phone) return;
+    const name = this.enquiry.name.trim();
+    const phone = this.enquiry.phone.trim();
+    const email = this.enquiry.email.trim();
+
+    if (!name || name.length < 2) {
+      this.notificationService.showError('Validation Failed', 'Please enter your name.');
+      return;
+    }
+
+    if (!this.validatePhone(phone)) {
+      this.notificationService.showError('Invalid Phone Number', 'Please enter a valid 10-digit mobile phone number.');
+      return;
+    }
+
+    if (email && !this.validateEmail(email)) {
+      this.notificationService.showError('Invalid Email', 'Please enter a valid email address.');
+      return;
+    }
+
     this.isSubmitting.set(true);
     this.vimahamurService.addEnquiry({
-      customer: this.enquiry.name,
-      phone: this.enquiry.phone,
-      email: this.enquiry.email,
+      customer: name,
+      phone: phone,
+      email: email,
       property: this.property()?.name || 'Vimahamur Luxury Property',
       message: this.enquiry.message,
       source: 'Property Details Page'
     }).subscribe({
       next: () => {
         this.isSubmitting.set(false);
-        this.showConfirmation.set(true);
+        this.notificationService.showSuccess(
+          'Enquiry Received! 🌟',
+          `Thank you ${name}! Our senior property consultant will send complete layout brochures and pricing details.`
+        );
         this.enquiry.name = '';
         this.enquiry.phone = '';
         this.enquiry.email = '';
         this.enquiry.message = '';
-        window.setTimeout(() => this.showConfirmation.set(false), 4000);
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting.set(false);
+        this.notificationService.showError('Submission Error', err.error?.message ?? 'Failed to send enquiry. Please try again.');
       }
     });
   }
@@ -170,13 +225,17 @@ export class DetailsPageComponent {
     event.preventDefault();
     if (!propertyId) return;
     if (!this.authService.isAuthenticated()) {
-      alert('Please sign in to save properties to your account.');
+      this.notificationService.showWarning('Sign In Required', 'Please sign in to bookmark this property to your account.');
       return;
     }
     if (this.isSaved(propertyId)) {
-      this.authService.removeFromSavedProperties(propertyId).subscribe();
+      this.authService.removeFromSavedProperties(propertyId).subscribe({
+        next: () => this.notificationService.showInfo('Property Removed', 'Listing removed from your saved bookmarks.')
+      });
     } else {
-      this.authService.addToSavedProperties(propertyId).subscribe();
+      this.authService.addToSavedProperties(propertyId).subscribe({
+        next: () => this.notificationService.showSuccess('Property Saved! ❤️', 'Listing added to your saved collection.')
+      });
     }
   }
 }

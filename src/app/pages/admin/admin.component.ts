@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VimahamurService, PropertyListing, LeadCard, Booking, PropertyMapper } from '../../shared/services/vimahamur.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +17,7 @@ export class AdminComponent implements OnInit {
   private readonly estateService = inject(VimahamurService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
 
   protected readonly properties = this.estateService.properties;
   protected readonly leads = this.estateService.adminLeads;
@@ -112,12 +114,14 @@ export class AdminComponent implements OnInit {
       error: (err) => {
         this.isClearingDb.set(false);
         alert(err.error?.message ?? 'Failed to clear dummy data.');
+        this.notificationService.showError('Error', err.error?.message ?? 'Failed to clear dummy data.');
       }
     });
   }
 
   protected logout(): void {
     this.authService.logout();
+    this.notificationService.showInfo('Signed Out', 'Admin session ended.');
     this.router.navigate(['/login']);
   }
 
@@ -150,7 +154,6 @@ export class AdminComponent implements OnInit {
     this.modalMode.set('edit');
     this.editingPropertyId.set(property._id ?? null);
     
-    // Abstracted API data format conversion
     const apiProperty = PropertyMapper.toApi(property);
 
     this.formModel = {
@@ -179,7 +182,6 @@ export class AdminComponent implements OnInit {
     this.showModal.set(false);
   }
 
-  // Image Compression & Processing Helper
   private compressImage(file: File, maxWidth = 1600, quality = 0.85): Promise<string> {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -210,7 +212,6 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  // File Upload Handlers
   protected async onMainImageSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
@@ -219,16 +220,17 @@ export class AdminComponent implements OnInit {
     this.isUploadingMain.set(true);
 
     try {
-      // Create high-speed compressed Data URL for instant, 100% reliable preview & persistence
       const compressedDataUrl = await this.compressImage(file, 1600, 0.88);
       if (compressedDataUrl) {
         this.formModel.image = compressedDataUrl;
+        this.notificationService.showSuccess('Image Uploaded', 'Cover image processed successfully.');
       }
       this.isUploadingMain.set(false);
       input.value = '';
     } catch {
       this.isUploadingMain.set(false);
       input.value = '';
+      this.notificationService.showError('Upload Error', 'Failed to process image.');
     }
   }
 
@@ -255,13 +257,13 @@ export class AdminComponent implements OnInit {
       }
     }
     this.isUploadingGallery.set(false);
+    this.notificationService.showSuccess('Gallery Updated', `${files.length} image(s) added.`);
   }
 
   protected removeGalleryImage(index: number): void {
     this.formModel.gallery.splice(index, 1);
   }
 
-  // Array Helper Methods
   protected addAmenity(): void {
     if (this.newAmenity.trim()) {
       this.formModel.amenities.push(this.newAmenity.trim());
@@ -295,17 +297,15 @@ export class AdminComponent implements OnInit {
     this.formModel.floorPlans.splice(index, 1);
   }
 
-  // CRUD Operations
   protected saveProperty(): void {
     const trimmedName = this.formModel.name?.trim();
     if (!trimmedName) {
-      alert('Please enter a Property Name.');
+      this.notificationService.showError('Validation', 'Please enter a Property Name.');
       return;
     }
 
     this.isSubmitting.set(true);
 
-    // Prepare payload with default fallbacks for optional fields
     const defaultCover = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80';
     const numPrice = Number(this.formModel.priceValue);
 
@@ -318,7 +318,7 @@ export class AdminComponent implements OnInit {
       area: this.formModel.area?.trim() || 'N/A',
       type: this.formModel.type?.trim() || 'Premium Plots',
       category: this.formModel.category || 'Plots',
-      description: this.formModel.description?.trim() || `${trimmedName} - Premium property listing by ViMahaMur Luxury Properties.`,
+      description: this.formModel.description?.trim() || `${trimmedName} - Premium property listing.`,
       image: this.formModel.image?.trim() || defaultCover,
       gallery: this.formModel.gallery?.length ? this.formModel.gallery : [this.formModel.image?.trim() || defaultCover],
       amenities: this.formModel.amenities ?? [],
@@ -331,12 +331,12 @@ export class AdminComponent implements OnInit {
         next: () => {
           this.isSubmitting.set(false);
           this.showModal.set(false);
-          alert('Property created successfully.');
+          this.notificationService.showSuccess('Property Created', 'Listing added successfully.');
         },
         error: (err) => {
           this.isSubmitting.set(false);
-          const detail = err.error?.errors?.map((e: any) => `• ${e.msg}`).join('\n') || err.error?.message || 'Failed to create property.';
-          alert(`Failed to create property:\n${detail}`);
+          const detail = err.error?.message || 'Failed to create property.';
+          this.notificationService.showError('Creation Failed', detail);
         }
       });
     } else {
@@ -346,12 +346,12 @@ export class AdminComponent implements OnInit {
         next: () => {
           this.isSubmitting.set(false);
           this.showModal.set(false);
-          alert('Property updated successfully.');
+          this.notificationService.showSuccess('Property Updated', 'Listing updated successfully.');
         },
         error: (err) => {
           this.isSubmitting.set(false);
-          const detail = err.error?.errors?.map((e: any) => `• ${e.msg}`).join('\n') || err.error?.message || 'Failed to update property.';
-          alert(`Failed to update property:\n${detail}`);
+          const detail = err.error?.message || 'Failed to update property.';
+          this.notificationService.showError('Update Failed', detail);
         }
       });
     }
@@ -359,14 +359,10 @@ export class AdminComponent implements OnInit {
 
   protected deleteProperty(id: string | undefined): void {
     if (!id) return;
-    if (confirm('Are you sure you want to delete this property listing? This action cannot be undone.')) {
+    if (confirm('Delete this property?')) {
       this.estateService.deleteProperty(id).subscribe({
-        next: () => {
-          alert('Property deleted.');
-        },
-        error: (err) => {
-          alert(err.error?.message ?? 'Failed to delete property.');
-        }
+        next: () => this.notificationService.showSuccess('Property Deleted', 'Listing removed.'),
+        error: (err) => this.notificationService.showError('Delete Failed', err.error?.message ?? 'Failed to delete.')
       });
     }
   }
@@ -374,21 +370,17 @@ export class AdminComponent implements OnInit {
   protected updateLeadStatus(id: string | undefined, status: string): void {
     if (!id) return;
     this.estateService.updateLeadStatus(id, status).subscribe({
-      next: () => {
-        alert('Lead status updated.');
-      },
-      error: (err) => {
-        alert(err.error?.message ?? 'Failed to update status.');
-      }
+      next: () => this.notificationService.showSuccess('Status Updated', 'Lead status changed.'),
+      error: (err) => this.notificationService.showError('Update Failed', err.error?.message ?? 'Failed to update.')
     });
   }
 
   protected deleteLead(id: string | undefined): void {
     if (!id) return;
-    if (confirm('Delete this lead record?')) {
+    if (confirm('Delete this lead?')) {
       this.estateService.deleteLead(id).subscribe({
-        next: () => alert('Lead deleted.'),
-        error: () => alert('Failed to delete lead.')
+        next: () => this.notificationService.showSuccess('Lead Deleted', 'Lead removed.'),
+        error: (err) => this.notificationService.showError('Delete Failed', err.error?.message ?? 'Failed to delete.')
       });
     }
   }
@@ -396,21 +388,17 @@ export class AdminComponent implements OnInit {
   protected updateBookingStatus(id: string | undefined, status: 'Pending' | 'Confirmed' | 'Cancelled'): void {
     if (!id) return;
     this.estateService.updateBookingStatus(id, status).subscribe({
-      next: () => {
-        alert('Booking status updated.');
-      },
-      error: (err) => {
-        alert(err.error?.message ?? 'Failed to update booking.');
-      }
+      next: () => this.notificationService.showSuccess('Booking Updated', 'Booking status changed.'),
+      error: (err) => this.notificationService.showError('Update Failed', err.error?.message ?? 'Failed to update.')
     });
   }
 
   protected deleteBooking(id: string | undefined): void {
     if (!id) return;
-    if (confirm('Delete this site visit booking?')) {
+    if (confirm('Delete this booking?')) {
       this.estateService.deleteBooking(id).subscribe({
-        next: () => alert('Booking deleted.'),
-        error: () => alert('Failed to delete booking.')
+        next: () => this.notificationService.showSuccess('Booking Deleted', 'Booking removed.'),
+        error: (err) => this.notificationService.showError('Delete Failed', err.error?.message ?? 'Failed to delete.')
       });
     }
   }

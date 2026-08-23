@@ -5,6 +5,8 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { AuthRole } from '../../shared/models/auth.model';
 
+import { NotificationService } from '../../shared/services/notification.service';
+
 @Component({
   selector: 'app-admin-login',
   standalone: true,
@@ -15,6 +17,7 @@ import { AuthRole } from '../../shared/models/auth.model';
 export class AdminLoginComponent implements OnInit {
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
 
   protected credentials = {
     email: '',
@@ -39,27 +42,37 @@ export class AdminLoginComponent implements OnInit {
   }
 
   protected submitLogin(): void {
-    if (!this.credentials.email || !this.credentials.password) {
-      this.errorMessage.set('Please enter both administrator email and access key.');
+    const email = this.credentials.email.trim();
+    const password = this.credentials.password;
+
+    if (!email || !password) {
+      const msg = 'Please enter both administrator email and access key.';
+      this.errorMessage.set(msg);
+      this.notificationService.showError('Validation Required', msg);
       return;
     }
 
     this.errorMessage.set(null);
     this.isSubmitting.set(true);
 
-    this.authService.login(this.credentials).subscribe({
+    this.authService.login({ ...this.credentials, email }).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
         if (res.role === 'Admin') {
+          this.notificationService.showSuccess('Admin Verified! 🛡️', 'Welcome to the Vimahamur Management Console.');
           this.router.navigate(['/admin/dashboard']);
         } else {
-          this.errorMessage.set('Access Denied: This portal requires administrator privileges.');
+          const msg = 'Access Denied: This portal requires administrator privileges.';
+          this.errorMessage.set(msg);
+          this.notificationService.showError('Access Denied', msg);
           this.authService.logout();
         }
       },
       error: (err) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(err.error?.message ?? 'Invalid administrator credentials.');
+        const msg = err.error?.message ?? 'Invalid administrator credentials.';
+        this.errorMessage.set(msg);
+        this.notificationService.showError('Authentication Failed', msg);
       }
     });
   }
