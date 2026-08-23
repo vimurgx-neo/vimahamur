@@ -4,6 +4,7 @@ import { MarketingPageComponent } from './pages/marketing-page/marketing-page.co
 import { DetailsPageComponent } from './pages/details-page/details-page.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { roleGuard } from './shared/guards/role.guard';
 
@@ -18,9 +19,9 @@ export const routes: Routes = [
   { path: 'blogs', redirectTo: 'blog', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, data: { title: 'Login | Vimahamur Luxury Property' } },
   { path: 'signin', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'admin', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'admin/login', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'admin-login', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'admin', redirectTo: 'admin/login', pathMatch: 'full' },
+  { path: 'admin/login', component: AdminLoginComponent, data: { title: 'Admin Security Gateway | Vimahamur Luxury Property' } },
+  { path: 'admin-login', redirectTo: 'admin/login', pathMatch: 'full' },
   { path: 'customer/login', redirectTo: 'login', pathMatch: 'full' },
   { path: 'customer/dashboard', redirectTo: '', pathMatch: 'full' },
   { path: 'register', component: LoginComponent, data: { title: 'Sign Up | Vimahamur Luxury Property' } },

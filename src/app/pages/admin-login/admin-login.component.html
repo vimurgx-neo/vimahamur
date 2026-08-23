@@ -1,0 +1,101 @@
+<section class="admin-auth-section">
+  <div class="admin-auth-overlay"></div>
+
+  <div class="admin-auth-container">
+    <div class="admin-auth-card glass-card">
+      
+      <!-- Security Badge -->
+      <div class="security-badge-pill">
+        <span class="pulse-dot"></span>
+        <span class="badge-text">Restricted Area • Executive Access Only</span>
+      </div>
+
+      <!-- Branding Header -->
+      <div class="admin-brand-header">
+        <div class="brand-crest">
+          <span class="crest-shield">🛡️</span>
+        </div>
+        <h2>Vimahamur Portal</h2>
+        <p>Management Gateway & Operations Dashboard</p>
+      </div>
+
+      <!-- Quick Demo Sign-In Chips -->
+      <div class="quick-admin-access">
+        <span class="access-label">Quick Sign-in:</span>
+        <div class="access-buttons">
+          <button type="button" class="btn-quick-admin super-admin-chip" (click)="fillDemo('superadmin')">
+            👑 Super Admin
+          </button>
+          <button type="button" class="btn-quick-admin admin-chip" (click)="fillDemo('admin')">
+            🛡️ Admin
+          </button>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="banner error-banner">
+          ⚠️ {{ errorMessage() }}
+        </div>
+      }
+
+      <!-- Admin Login Form -->
+      <form class="admin-form" (ngSubmit)="submitLogin()">
+        <label>
+          <span>Administrator Email *</span>
+          <div class="input-with-icon">
+            <span class="input-icon">✉️</span>
+            <input 
+              type="email" 
+              [(ngModel)]="credentials.email" 
+              name="email" 
+              placeholder="superadmin@vimahamur.local" 
+              required 
+              autocomplete="email" />
+          </div>
+        </label>
+
+        <label>
+          <span>Security Access Key *</span>
+          <div class="input-with-icon">
+            <span class="input-icon">🔑</span>
+            <input 
+              [type]="showPassword() ? 'text' : 'password'" 
+              [(ngModel)]="credentials.password" 
+              name="password" 
+              placeholder="••••••••••••" 
+              required 
+              autocomplete="current-password" />
+            <button 
+              type="button" 
+              class="toggle-pwd-btn" 
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+              {{ showPassword() ? '👁️' : '🔒' }}
+            </button>
+          </div>
+        </label>
+
+        <div class="form-options-row">
+          <label class="remember-label">
+            <input type="checkbox" [(ngModel)]="credentials.rememberMe" name="rememberMe" />
+            <span>Keep session active</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-admin-submit" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="btn-spinner"></span> Authenticating Security Key...
+          } @else {
+            Authorize & Access Portal ➔
+          }
+        </button>
+      </form>
+
+      <div class="portal-footer">
+        <a routerLink="/" class="back-link">← Return to Public Website</a>
+        <a routerLink="/login" class="customer-switch-link">Customer Sign In</a>
+      </div>
+
+    </div>
+  </div>
+</section>
