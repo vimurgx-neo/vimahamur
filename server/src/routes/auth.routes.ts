@@ -71,6 +71,7 @@ authRouter.post('/login', credentials, async (req: any, res: any, next: any) => 
       res.status(401).json({ message: 'Invalid email or password.' });
       return;
     }
+    console.info(`[AUTH] User ${user.email} (${user.role}) logged in successfully at ${new Date().toISOString()}`);
     res.json(tokenFor(user));
   } catch (e) {
     next(e);
@@ -127,6 +128,7 @@ authRouter.post('/google', async (req: any, res: any, next: any) => {
       });
     }
 
+    console.info(`[AUTH] Google User ${user.email} (${user.role}) logged in successfully at ${new Date().toISOString()}`);
     res.json(tokenFor(user));
   } catch (e) {
     next(e);
