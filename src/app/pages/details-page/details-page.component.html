@@ -67,33 +67,6 @@
           </div>
         </div>
 
-        <!-- Floor Plans Section with Switcher -->
-        <div class="details-section">
-          <h3>Floor Plan Architectures</h3>
-          <div class="floorplan-switcher">
-            <div class="floorplan-tabs">
-              @for (plan of property()!.floorPlans; track plan; let i = $index) {
-                <button
-                  type="button"
-                  class="tab-btn"
-                  [class.active]="activeFloorPlanIndex() === i"
-                  (click)="activeFloorPlanIndex.set(i)"
-                >
-                  Plan Option {{ i + 1 }}
-                </button>
-              }
-            </div>
-            <div class="floorplan-content glass-card">
-              <h4>{{ property()!.floorPlans[activeFloorPlanIndex()] }}</h4>
-              <p>Standard architectural blueprint with luxury specifications, matching current floor parameters.</p>
-              <div class="blueprint-placeholder">
-                <span class="blueprint-grid"></span>
-                <span class="blueprint-text">Architectural Layout Schematic</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Neighborhood Maps integration -->
         <div class="details-section">
           <h3>Neighborhood Infrastructure</h3>
