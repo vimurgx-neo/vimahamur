@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       embedUrl: 'https://maps.google.com/maps?q=Salem,%20Tamil%20Nadu&t=&z=13&ie=UTF8&iwloc=&output=embed',
       directionUrl: 'https://www.google.com/maps?q=Salem,+Tamil+Nadu',
       officeAddress: '124 Junction Main Road, Five Roads, Salem, Tamil Nadu - 636004',
-      phone: '+91 80728 62702',
+      phone: '+91 90953 92629',
       highlights: ['DTCP Clear Titles', '100 ft Arterial Access', 'Underground Drainage Ready']
     },
     {
@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       embedUrl: 'https://maps.google.com/maps?q=Tiruchirappalli,%20Tamil%20Nadu&t=&z=13&ie=UTF8&iwloc=&output=embed',
       directionUrl: 'https://www.google.com/maps?q=Tiruchirappalli,+Tamil+Nadu',
       officeAddress: '45 Cantonment Promenade, Near Central Bus Stand, Trichy, Tamil Nadu - 620001',
-      phone: '+91 80728 62702',
+      phone: '+91 90953 92629',
       highlights: ['International Airport Link', 'Tier-1 IT Park Proximity', 'RERA Compliant Enclaves']
     },
     {
@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       embedUrl: 'https://maps.google.com/maps?q=Namakkal,%20Tamil%20Nadu&t=&z=13&ie=UTF8&iwloc=&output=embed',
       directionUrl: 'https://www.google.com/maps?q=Namakkal,+Tamil+Nadu',
       officeAddress: '78 Mohanur Road, Collectorate Junction, Namakkal, Tamil Nadu - 637001',
-      phone: '+91 80728 62702',
+      phone: '+91 90953 92629',
       highlights: ['Gated Gated Security', 'Abundant Potable Water', 'Wide Blacktop Avenues']
     },
     {
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       embedUrl: 'https://maps.google.com/maps?q=Coimbatore,%20Tamil%20Nadu&t=&z=13&ie=UTF8&iwloc=&output=embed',
       directionUrl: 'https://www.google.com/maps?q=Coimbatore,+Tamil+Nadu',
       officeAddress: '512 Avinashi Road, Peelamedu, Coimbatore, Tamil Nadu - 641004',
-      phone: '+91 80728 62702',
+      phone: '+91 90953 92629',
       highlights: ['Lush Foothill Microclimate', 'Smart City Smart Infrastructure', 'Clubhouse & Parks']
     },
     {
@@ -270,7 +270,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       },
       error: (err) => {
         this.isSubmitting.set(false);
-        this.notificationService.showError('Booking Error', err.error?.message ?? 'Could not schedule visit. Please try again or call +91 80728 62702.');
+        this.notificationService.showError('Booking Error', err.error?.message ?? 'Could not schedule visit. Please try again or call +91 90953 92629.');
       }
     });
   }
