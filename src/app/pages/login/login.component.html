@@ -57,20 +57,13 @@
             </div>
             
             <form class="auth-form" (ngSubmit)="submitLogin()">
-              <div class="demo-helpers">
-                <span class="demo-label">Quick Sign-in:</span>
-                <button type="button" class="demo-chip" (click)="fillDemoUser('superadmin')">👑 Super Admin</button>
-                <button type="button" class="demo-chip" (click)="fillDemoUser('admin')">🛡️ Admin</button>
-                <button type="button" class="demo-chip" (click)="fillDemoUser('customer')">👤 Customer</button>
-              </div>
-
               <label>
                 <span>Email Address *</span>
                 <input 
                   type="email" 
                   [(ngModel)]="credentials.email" 
                   name="email" 
-                  placeholder="admin@vimahamur.local" 
+                  placeholder="name@example.com" 
                   required 
                   autocomplete="email" />
               </label>
@@ -121,31 +114,32 @@
                   type="text" 
                   [(ngModel)]="registerData.name" 
                   name="name" 
-                  placeholder="e.g. Aparna Rao" 
+                  placeholder="e.g. John Doe" 
                   required 
                   autocomplete="name" />
               </label>
 
-              <label>
-                <span>Email Address *</span>
-                <input 
-                  type="email" 
-                  [(ngModel)]="registerData.email" 
-                  name="regEmail" 
-                  placeholder="aparna@example.com" 
-                  required 
-                  autocomplete="email" />
-              </label>
-
-              <label>
-                <span>Phone Number</span>
-                <input 
-                  type="tel" 
-                  [(ngModel)]="registerData.phone" 
-                  name="phone" 
-                  placeholder="+91 98765 43210" 
-                  autocomplete="tel" />
-              </label>
+              <div class="form-row-two">
+                <label>
+                  <span>Email *</span>
+                  <input 
+                    type="email" 
+                    [(ngModel)]="registerData.email" 
+                    name="registerEmail" 
+                    placeholder="name@example.com" 
+                    required 
+                    autocomplete="email" />
+                </label>
+                <label>
+                  <span>Phone</span>
+                  <input 
+                    type="tel" 
+                    [(ngModel)]="registerData.phone" 
+                    name="phone" 
+                    placeholder="+91 98765 43210" 
+                    autocomplete="tel" />
+                </label>
+              </div>
 
               <div class="form-row-two">
                 <label>
@@ -153,8 +147,8 @@
                   <input 
                     type="password" 
                     [(ngModel)]="registerData.password" 
-                    name="regPassword" 
-                    placeholder="Min 6 chars" 
+                    name="registerPassword" 
+                    placeholder="Min. 6 characters" 
                     required 
                     autocomplete="new-password" />
                 </label>
@@ -195,13 +189,6 @@
 
       <div class="social-auth-buttons">
         <div id="google-signin-btn" class="google-btn-wrapper"></div>
-        @if (isLocalhost) {
-          <div class="mock-google-bypass">
-            <button type="button" class="btn-mock-google" (click)="bypassGoogleSignIn()">
-              ⚡ [Dev Mode] Bypass with Mock Google Sign-In
-            </button>
-          </div>
-        }
       </div>
 
       <div class="auth-footer-links">

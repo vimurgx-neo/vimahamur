@@ -40,12 +40,10 @@
 
     <!-- FOOTER / LOGOUT -->
     <div class="sidebar-footer">
-      @if (isSuperAdmin()) {
-        <button class="btn-clear-db-sidebar" (click)="clearDummyData()" [disabled]="isClearingDb()">
-          <span class="nav-icon">⚡</span>
-          <span class="nav-text">{{ isClearingDb() ? 'Clearing...' : 'Clear Seed Data' }}</span>
-        </button>
-      }
+      <button class="btn-clear-db-sidebar" (click)="clearDummyData()" [disabled]="isClearingDb()">
+        <span class="nav-icon">⚡</span>
+        <span class="nav-text">{{ isClearingDb() ? 'Clearing...' : 'Clear Seed Data' }}</span>
+      </button>
       <button class="btn-logout-sidebar" (click)="logout()">
         <span class="nav-icon">🚪</span>
         <span class="nav-text">Log Out</span>

@@ -19,19 +19,6 @@
         <p>Management Gateway & Operations Dashboard</p>
       </div>
 
-      <!-- Quick Demo Sign-In Chips -->
-      <div class="quick-admin-access">
-        <span class="access-label">Quick Sign-in:</span>
-        <div class="access-buttons">
-          <button type="button" class="btn-quick-admin super-admin-chip" (click)="fillDemo('superadmin')">
-            👑 Super Admin
-          </button>
-          <button type="button" class="btn-quick-admin admin-chip" (click)="fillDemo('admin')">
-            🛡️ Admin
-          </button>
-        </div>
-      </div>
-
       @if (errorMessage()) {
         <div class="banner error-banner">
           ⚠️ {{ errorMessage() }}
@@ -48,7 +35,7 @@
               type="email" 
               [(ngModel)]="credentials.email" 
               name="email" 
-              placeholder="superadmin@vimahamur.local" 
+              placeholder="admin@vimahamur.local" 
               required 
               autocomplete="email" />
           </div>

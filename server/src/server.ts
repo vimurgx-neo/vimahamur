@@ -52,54 +52,27 @@ app.use(errorHandler);
 
 async function ensureDefaultUsers(): Promise<void> {
   try {
-    const superAdminEmail = (process.env.SUPER_ADMIN_EMAIL || 'superadmin@vimahamur.local').toLowerCase().trim();
-    const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD || 'ChangeMe!12345';
-    
-    // 1. SuperAdmin
-    const existingSuper = await UserModel.findOne({ email: superAdminEmail });
-    if (!existingSuper) {
-      const passwordHash = await bcrypt.hash(superAdminPassword, 12);
-      await UserModel.create({
-        name: 'ViMahaMur Luxury Properties Super Admin',
-        email: superAdminEmail,
-        phone: '+91 99999 88888',
-        passwordHash,
-        role: 'SuperAdmin'
-      });
-      console.info(`[AUTH] Auto-created SuperAdmin user: ${superAdminEmail}`);
-    }
+    // Migrate any legacy SuperAdmin accounts to standard Admin
+    await UserModel.updateMany({ role: 'SuperAdmin' }, { role: 'Admin' });
 
-    // 2. Standard Admin
-    const adminEmail = 'admin@vimahamur.local';
+    // Ensure Admin account exists
+    const adminEmail = (process.env.ADMIN_EMAIL || process.env.SUPER_ADMIN_EMAIL || 'admin@vimahamur.local').toLowerCase().trim();
+    const adminPassword = process.env.ADMIN_PASSWORD || process.env.SUPER_ADMIN_PASSWORD || 'ChangeMe!12345';
+
     const existingAdmin = await UserModel.findOne({ email: adminEmail });
     if (!existingAdmin) {
-      const passwordHash = await bcrypt.hash('ChangeMe!12345', 12);
+      const passwordHash = await bcrypt.hash(adminPassword, 12);
       await UserModel.create({
         name: 'ViMahaMur Luxury Properties Admin',
         email: adminEmail,
-        phone: '+91 99999 77777',
+        phone: '+91 90953 92629',
         passwordHash,
         role: 'Admin'
       });
-      console.info(`[AUTH] Auto-created Admin user: ${adminEmail}`);
-    }
-
-    // 3. Customer Account
-    const customerEmail = 'customer@vimahamur.local';
-    const existingCustomer = await UserModel.findOne({ email: customerEmail });
-    if (!existingCustomer) {
-      const passwordHash = await bcrypt.hash('ChangeMe!12345', 12);
-      await UserModel.create({
-        name: 'Aparna Rao',
-        email: customerEmail,
-        phone: '+91 98765 43210',
-        passwordHash,
-        role: 'Customer'
-      });
-      console.info(`[AUTH] Auto-created Customer user: ${customerEmail}`);
+      console.info(`[AUTH] Auto-created Admin account: ${adminEmail}`);
     }
   } catch (err) {
-    console.error('[AUTH] Failed to verify/seed default users:', err);
+    console.error('[AUTH] Failed to verify/seed admin user:', err);
   }
 }
 

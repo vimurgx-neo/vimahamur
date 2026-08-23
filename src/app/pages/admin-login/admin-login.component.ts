@@ -29,27 +29,13 @@ export class AdminLoginComponent implements OnInit {
 
   ngOnInit(): void {
     const role = this.authService.currentRole();
-    if (this.authService.isAuthenticated() && (role === 'Admin' || role === 'SuperAdmin')) {
+    if (this.authService.isAuthenticated() && role === 'Admin') {
       this.router.navigate(['/admin/dashboard']);
     }
   }
 
   protected togglePasswordVisibility(): void {
     this.showPassword.update(v => !v);
-  }
-
-  protected fillDemo(role: 'superadmin' | 'admin'): void {
-    if (role === 'superadmin') {
-      this.credentials.email = 'superadmin@vimahamur.local';
-      this.credentials.password = 'ChangeMe!12345';
-      this.credentials.role = 'SuperAdmin';
-    } else {
-      this.credentials.email = 'admin@vimahamur.local';
-      this.credentials.password = 'ChangeMe!12345';
-      this.credentials.role = 'Admin';
-    }
-    this.errorMessage.set(null);
-    this.submitLogin();
   }
 
   protected submitLogin(): void {
@@ -64,10 +50,10 @@ export class AdminLoginComponent implements OnInit {
     this.authService.login(this.credentials).subscribe({
       next: (res) => {
         this.isSubmitting.set(false);
-        if (res.role === 'Admin' || res.role === 'SuperAdmin') {
+        if (res.role === 'Admin') {
           this.router.navigate(['/admin/dashboard']);
         } else {
-          this.errorMessage.set('Access Denied: This portal requires administrator or executive privileges.');
+          this.errorMessage.set('Access Denied: This portal requires administrator privileges.');
           this.authService.logout();
         }
       },

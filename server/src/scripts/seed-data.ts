@@ -7,8 +7,8 @@ import { BookingModel } from '../models/booking.model.js';
 import { LeadModel } from '../models/lead.model.js';
 import { UserModel } from '../models/user.model.js';
 
-const SUPER_ADMIN_EMAIL = process.env.SUPER_ADMIN_EMAIL ?? 'superadmin@vimahamur.local';
-const SUPER_ADMIN_PASSWORD = process.env.SUPER_ADMIN_PASSWORD ?? 'ChangeMe!12345';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'admin@vimahamur.local';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? 'ChangeMe!12345';
 const CUSTOMER_EMAIL = 'customer@vimahamur.local';
 const CUSTOMER_PASSWORD = 'ChangeMe!12345';
 
@@ -17,7 +17,7 @@ async function seed() {
   await mongoose.connect(env.mongoUri);
 
   console.info('Clearing database tables...');
-  await UserModel.deleteMany({ role: { $in: ['Admin', 'SuperAdmin', 'Customer'] } });
+  await UserModel.deleteMany({ role: { $in: ['Admin', 'Customer'] } });
   await PropertyModel.deleteMany({});
   await BlogModel.deleteMany({});
   await BookingModel.deleteMany({});
@@ -33,19 +33,11 @@ async function seed() {
     role: 'Customer',
   });
 
-  const adminPasswordHash = await bcrypt.hash(SUPER_ADMIN_PASSWORD, 12);
+  const adminPasswordHash = await bcrypt.hash(ADMIN_PASSWORD, 12);
   const adminUser = await UserModel.create({
-    name: 'ViMahaMur Luxury Properties Super Admin',
-    email: SUPER_ADMIN_EMAIL,
-    phone: '+91 99999 88888',
-    passwordHash: adminPasswordHash,
-    role: 'SuperAdmin',
-  });
-
-  await UserModel.create({
     name: 'ViMahaMur Luxury Properties Admin',
-    email: 'admin@vimahamur.local',
-    phone: '+91 99999 77777',
+    email: ADMIN_EMAIL,
+    phone: '+91 90953 92629',
     passwordHash: adminPasswordHash,
     role: 'Admin',
   });

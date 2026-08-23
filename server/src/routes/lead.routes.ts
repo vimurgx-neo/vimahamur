@@ -34,8 +34,8 @@ leadRouter.post('/', [
   }
 });
 
-// GET /api/leads (Admin / SuperAdmin Only)
-leadRouter.get('/', requireAuth, requireRole('Admin', 'SuperAdmin'), async (_request: Request, response: Response, next: NextFunction) => {
+// GET /api/leads (Admin Only)
+leadRouter.get('/', requireAuth, requireRole('Admin'), async (_request: Request, response: Response, next: NextFunction) => {
   try {
     const leads = await LeadModel.find().sort({ createdAt: -1 }).limit(100).lean();
     response.json({ data: leads });
@@ -44,8 +44,8 @@ leadRouter.get('/', requireAuth, requireRole('Admin', 'SuperAdmin'), async (_req
   }
 });
 
-// PUT /api/leads/:id (Admin / SuperAdmin Only)
-leadRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), [
+// PUT /api/leads/:id (Admin Only)
+leadRouter.put('/:id', requireAuth, requireRole('Admin'), [
   body('status').isIn(['New', 'Contacted', 'Site Visit', 'Negotiation', 'Booked', 'Closed']).withMessage('Invalid status')
 ], async (request: Request, response: Response, next: NextFunction) => {
   try {
@@ -67,8 +67,8 @@ leadRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), [
   }
 });
 
-// DELETE /api/leads/:id (Admin / SuperAdmin Only)
-leadRouter.delete('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), async (request: Request, response: Response, next: NextFunction) => {
+// DELETE /api/leads/:id (Admin Only)
+leadRouter.delete('/:id', requireAuth, requireRole('Admin'), async (request: Request, response: Response, next: NextFunction) => {
   try {
     const lead = await LeadModel.findByIdAndDelete(request.params.id);
     if (!lead) {

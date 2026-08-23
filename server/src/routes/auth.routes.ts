@@ -298,7 +298,7 @@ authRouter.delete('/profile/saved-properties/:propertyId', requireAuth, async (r
   }
 });
 
-authRouter.post('/clear-dummy-data', requireAuth, requireRole('SuperAdmin'), async (req: AuthRequest, res: any, next: any) => {
+authRouter.post('/clear-dummy-data', requireAuth, requireRole('Admin'), async (req: AuthRequest, res: any, next: any) => {
   try {
     await PropertyModel.deleteMany({});
     await BlogModel.deleteMany({});

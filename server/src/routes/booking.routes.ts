@@ -62,8 +62,8 @@ bookingRouter.get('/my-bookings', requireAuth, requireRole('Customer'), async (r
   }
 });
 
-// GET /api/bookings (Admin / SuperAdmin)
-bookingRouter.get('/', requireAuth, requireRole('Admin', 'SuperAdmin'), async (req: Request, res: Response, next: NextFunction) => {
+// GET /api/bookings (Admin)
+bookingRouter.get('/', requireAuth, requireRole('Admin'), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const bookings = await BookingModel.find().sort({ preferredDate: -1 }).lean();
     res.json({ data: bookings });
@@ -72,8 +72,8 @@ bookingRouter.get('/', requireAuth, requireRole('Admin', 'SuperAdmin'), async (r
   }
 });
 
-// PUT /api/bookings/:id (Admin / SuperAdmin)
-bookingRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), [
+// PUT /api/bookings/:id (Admin)
+bookingRouter.put('/:id', requireAuth, requireRole('Admin'), [
   body('status').isIn(['Pending', 'Confirmed', 'Cancelled']).withMessage('Status must be Pending, Confirmed, or Cancelled')
 ], async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -95,8 +95,8 @@ bookingRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), [
   }
 });
 
-// DELETE /api/bookings/:id (Admin / SuperAdmin)
-bookingRouter.delete('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), async (req: Request, res: Response, next: NextFunction) => {
+// DELETE /api/bookings/:id (Admin)
+bookingRouter.delete('/:id', requireAuth, requireRole('Admin'), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const booking = await BookingModel.findByIdAndDelete(req.params.id);
     if (!booking) {

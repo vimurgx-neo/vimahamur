@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthRole } from '../../shared/models/auth.model';
+import { AuthService } from '../../shared/services/auth.service';
 import { environment } from '../../../environments/environment';
+
+declare const google: any;
 
 @Component({
   selector: 'app-login',
@@ -22,8 +24,6 @@ export class LoginComponent implements OnInit {
   protected errorMessage = signal<string | null>(null);
   protected successMessage = signal<string | null>(null);
   protected isSubmitting = signal(false);
-  protected readonly isLocalhost = typeof window !== 'undefined' && 
-    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
   protected logout(): void {
     this.authService.logout();
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     email: '',
     password: '',
     rememberMe: false,
-    role: 'Admin' as AuthRole
+    role: 'Customer' as AuthRole
   };
 
   // Sign Up Form Model
@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    // Check if route or query indicates register mode
     const path = this.router.url;
     if (path.includes('register') || path.includes('signup')) {
       this.isRegisterMode.set(true);
@@ -59,34 +58,35 @@ export class LoginComponent implements OnInit {
 
   private initGoogleSignIn(): void {
     const checkGsi = () => {
-      const googleObj = (window as any).google;
-      if (googleObj && googleObj.accounts && googleObj.accounts.id) {
-        googleObj.accounts.id.initialize({
-          client_id: environment.googleClientId,
-          callback: (response: any) => this.handleGoogleCredential(response.credential),
-          auto_select: false,
-          cancel_on_tap_outside: true
-        });
-        
-        const btnContainer = document.getElementById('google-signin-btn');
-        if (btnContainer) {
-          googleObj.accounts.id.renderButton(btnContainer, {
-            theme: 'outline',
-            size: 'large',
-            width: btnContainer.clientWidth || 300,
-            text: 'signin_with',
-            shape: 'rectangular'
+      if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+        try {
+          google.accounts.id.initialize({
+            client_id: environment.googleClientId,
+            callback: (response: any) => this.handleGoogleCredential(response.credential),
+            auto_select: false,
+            cancel_on_tap_outside: true,
           });
+
+          const btnContainer = document.getElementById('google-signin-btn');
+          if (btnContainer) {
+            btnContainer.innerHTML = '';
+            google.accounts.id.renderButton(btnContainer, {
+              theme: 'outline',
+              size: 'large',
+              width: 320,
+              text: 'continue_with',
+              shape: 'rectangular',
+              logo_alignment: 'left'
+            });
+          }
+        } catch (e) {
+          console.warn('Google Sign-In initialization deferred', e);
         }
       } else {
         setTimeout(checkGsi, 100);
       }
     };
     checkGsi();
-  }
-
-  protected bypassGoogleSignIn(): void {
-    this.handleGoogleCredential('mock-customer@vimahamur.local');
   }
 
   protected handleGoogleCredential(token: string): void {
@@ -109,24 +109,6 @@ export class LoginComponent implements OnInit {
     this.isRegisterMode.set(register);
     this.errorMessage.set(null);
     this.successMessage.set(null);
-  }
-
-  protected fillDemoUser(type: 'superadmin' | 'admin' | 'customer'): void {
-    if (type === 'superadmin') {
-      this.credentials.email = 'superadmin@vimahamur.local';
-      this.credentials.password = 'ChangeMe!12345';
-      this.credentials.role = 'SuperAdmin';
-    } else if (type === 'admin') {
-      this.credentials.email = 'admin@vimahamur.local';
-      this.credentials.password = 'ChangeMe!12345';
-      this.credentials.role = 'Admin';
-    } else {
-      this.credentials.email = 'customer@vimahamur.local';
-      this.credentials.password = 'ChangeMe!12345';
-      this.credentials.role = 'Customer';
-    }
-    this.errorMessage.set(null);
-    this.submitLogin();
   }
 
   protected submitLogin(): void {
@@ -190,7 +172,7 @@ export class LoginComponent implements OnInit {
   }
 
   private redirectByRole(role: AuthRole | null): void {
-    if (role === 'Admin' || role === 'SuperAdmin') {
+    if (role === 'Admin') {
       this.router.navigate(['/admin/dashboard']);
     } else {
       this.router.navigate(['/']);

@@ -17,7 +17,7 @@
             ❤️ Saved @if (savedProperties().length > 0) { <span class="badge">{{ savedProperties().length }}</span> }
           </button>
           
-          @if (currentUser()?.role === 'Admin' || currentUser()?.role === 'SuperAdmin') {
+          @if (currentUser()?.role === 'Admin') {
             <a routerLink="/admin/dashboard" class="btn btn-outline btn-xs nav-admin-btn">🛡️ Admin Panel</a>
           }
 
@@ -65,7 +65,7 @@
             ❤️ Saved @if (savedProperties().length > 0) { <span class="badge">{{ savedProperties().length }}</span> }
           </button>
           
-          @if (currentUser()?.role === 'Admin' || currentUser()?.role === 'SuperAdmin') {
+          @if (currentUser()?.role === 'Admin') {
             <a routerLink="/admin/dashboard" class="btn btn-outline nav-admin-btn" (click)="toggleMobileMenu()">🛡️ Admin Panel</a>
           }
 

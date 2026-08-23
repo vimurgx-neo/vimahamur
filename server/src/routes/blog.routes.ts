@@ -48,8 +48,8 @@ blogRouter.get('/:slug', async (req: Request, res: Response, next: NextFunction)
   }
 });
 
-// POST /api/blogs (Admin / SuperAdmin)
-blogRouter.post('/', requireAuth, requireRole('Admin', 'SuperAdmin'), blogValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
+// POST /api/blogs (Admin)
+blogRouter.post('/', requireAuth, requireRole('Admin'), blogValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { title } = req.body;
     let slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -70,8 +70,8 @@ blogRouter.post('/', requireAuth, requireRole('Admin', 'SuperAdmin'), blogValida
   }
 });
 
-// PUT /api/blogs/:id (Admin / SuperAdmin)
-blogRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), blogValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
+// PUT /api/blogs/:id (Admin)
+blogRouter.put('/:id', requireAuth, requireRole('Admin'), blogValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const blog = await BlogModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!blog) {
@@ -84,8 +84,8 @@ blogRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), blogVali
   }
 });
 
-// DELETE /api/blogs/:id (Admin / SuperAdmin)
-blogRouter.delete('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), async (req: Request, res: Response, next: NextFunction) => {
+// DELETE /api/blogs/:id (Admin)
+blogRouter.delete('/:id', requireAuth, requireRole('Admin'), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const blog = await BlogModel.findByIdAndDelete(req.params.id);
     if (!blog) {

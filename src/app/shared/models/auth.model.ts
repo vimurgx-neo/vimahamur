@@ -1,4 +1,4 @@
-export type AuthRole = 'Customer' | 'Admin' | 'SuperAdmin';
+export type AuthRole = 'Customer' | 'Admin';
 
 export interface LoginRequest {
   email: string;

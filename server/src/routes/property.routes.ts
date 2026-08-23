@@ -113,8 +113,8 @@ propertyRouter.get('/:slug', async (req: Request, res: Response, next: NextFunct
   }
 });
 
-// POST /api/properties (Admin / SuperAdmin)
-propertyRouter.post('/', requireAuth, requireRole('Admin', 'SuperAdmin'), propertyValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
+// POST /api/properties (Admin)
+propertyRouter.post('/', requireAuth, requireRole('Admin'), propertyValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body;
     let slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -136,8 +136,8 @@ propertyRouter.post('/', requireAuth, requireRole('Admin', 'SuperAdmin'), proper
   }
 });
 
-// PUT /api/properties/:id (Admin / SuperAdmin)
-propertyRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), propertyValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
+// PUT /api/properties/:id (Admin)
+propertyRouter.put('/:id', requireAuth, requireRole('Admin'), propertyValidation, validate, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const property = await PropertyModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!property) {
@@ -150,8 +150,8 @@ propertyRouter.put('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), prop
   }
 });
 
-// DELETE /api/properties/:id (Admin / SuperAdmin)
-propertyRouter.delete('/:id', requireAuth, requireRole('Admin', 'SuperAdmin'), async (req: Request, res: Response, next: NextFunction) => {
+// DELETE /api/properties/:id (Admin)
+propertyRouter.delete('/:id', requireAuth, requireRole('Admin'), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const property = await PropertyModel.findByIdAndDelete(req.params.id);
     if (!property) {
@@ -190,8 +190,8 @@ const upload = multer({
   }
 });
 
-// POST /api/properties/upload (Admin / SuperAdmin)
-propertyRouter.post('/upload', requireAuth, requireRole('Admin', 'SuperAdmin'), upload.single('file'), (req: Request, res: Response, next: NextFunction) => {
+// POST /api/properties/upload (Admin)
+propertyRouter.post('/upload', requireAuth, requireRole('Admin'), upload.single('file'), (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.file) {
       res.status(400).json({ message: 'No file uploaded' });

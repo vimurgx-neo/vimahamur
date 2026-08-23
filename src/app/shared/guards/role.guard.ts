@@ -10,13 +10,11 @@ export const roleGuard: CanActivateFn = (route) => {
   const currentRole = authService.currentRole();
 
   if (!authService.isAuthenticated()) {
-    return router.createUrlTree(['/login']);
+    return router.createUrlTree([expectedRole === 'Admin' ? '/admin/login' : '/login']);
   }
 
-  if (currentRole !== expectedRole && !(expectedRole === 'Admin' && currentRole === 'SuperAdmin')) {
-    return router.createUrlTree([
-      currentRole === 'Admin' || currentRole === 'SuperAdmin' ? '/admin/dashboard' : '/',
-    ]);
+  if (currentRole !== expectedRole) {
+    return router.createUrlTree([currentRole === 'Admin' ? '/admin/dashboard' : '/']);
   }
 
   return true;
