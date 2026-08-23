@@ -98,129 +98,52 @@
   </div>
 
   <footer class="site-footer">
-    <!-- VIP PRE-LAUNCH NEWSLETTER BRIEFING -->
-    <div class="footer-newsletter-wrap">
-      <div class="container">
-        <div class="newsletter-card">
-          <div class="newsletter-text">
-            <div class="nl-badge">VIP INVESTOR DESK</div>
-            <h3>Exclusive Pre-Launch Plot Briefings</h3>
-            <p>Subscribe for first-look notifications on prime highway corridors and gated layouts before public announcement.</p>
-          </div>
-          <form class="newsletter-form" (ngSubmit)="subscribeNewsletter()">
-            <input 
-              type="email" 
-              placeholder="Enter your corporate or personal email..." 
-              [ngModel]="newsletterEmail()" 
-              (ngModelChange)="newsletterEmail.set($event)" 
-              name="footerEmail" 
-              required 
-            />
-            <button type="submit" class="btn btn-primary btn-gold-shimmer">Subscribe</button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- MAIN CORPORATE FOOTER GRID -->
-    <div class="container footer-grid">
-      <!-- Brand & Trust Credentials -->
-      <div class="footer-brand-column">
-        <div class="brand-footer-wrap">
-          <img src="/vimahamur-logo.jpg" alt="Vimahamur Luxury Property" class="footer-brand-emblem" />
-          <div class="brand-footer-text">
-            <span class="brand-name">ViMahaMur</span>
+    <div class="container footer-compact-inner">
+      <!-- Brand & Badge -->
+      <div class="footer-left">
+        <div class="brand-row">
+          <img src="/vimahamur-logo.jpg" alt="ViMahaMur Logo" class="footer-mini-logo" />
+          <div class="brand-titles">
+            <span class="brand-title">ViMahaMur</span>
             <span class="brand-sub">Luxury Properties</span>
           </div>
         </div>
-        <p class="brand-desc">
-          Pioneering bespoke residential land developments, gated layouts, and highway commercial corridors across Tamil Nadu with 100% legal clarity.
-        </p>
-        
-        <div class="compliance-badges">
-          <span class="badge-pill">🛡️ 100% DTCP Approved</span>
-          <span class="badge-pill">📜 Clear Title Deeds</span>
-          <span class="badge-pill">🏛️ RERA Compliant</span>
-        </div>
+        <span class="footer-pill">🛡️ DTCP Approved Plots</span>
+      </div>
 
-        <div class="footer-socials">
-          <a href="https://wa.me/919095392629" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Concierge">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.297.144.35.491 1.198.534 1.285.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.087-.179.182-.077.357.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.173.087.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.981-1.306A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+      <!-- Quick Nav Links -->
+      <nav class="footer-nav">
+        <a routerLink="/">Home</a>
+        <a routerLink="/properties">Plots & Properties</a>
+        <a routerLink="/contact">Book Site Visit</a>
+        <a routerLink="/login">Client Portal</a>
+      </nav>
+
+      <!-- Direct Contact & Socials -->
+      <div class="footer-right">
+        <a href="tel:+919095392629" class="footer-phone-link">
+          <span class="phone-icon">📞</span>
+          <strong>+91 90953 92629</strong>
+        </a>
+        <div class="footer-social-icons">
+          <a href="https://wa.me/919095392629" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.297.144.35.491 1.198.534 1.285.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.087-.179.182-.077.357.101.174.449.741.964 1.201.662.591 1.221.774 1.394.861.173.087.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.434 5.176L2 22l4.981-1.306A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
           </a>
           <a href="https://instagram.com/vimahamur-luxury-property" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
           </a>
           <a href="https://facebook.com/vimahamur-luxury-property" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
           </a>
-        </div>
-      </div>
-
-      <!-- Prime Corridors -->
-      <div>
-        <h4>Key Corridors</h4>
-        <ul class="footer-nav-list">
-          <li><a routerLink="/properties" [queryParams]="{city: 'trichy'}">Trichy Mega Expressway</a></li>
-          <li><a routerLink="/properties" [queryParams]="{city: 'karur'}">Karur Bypass Corridors</a></li>
-          <li><a routerLink="/properties" [queryParams]="{city: 'coimbatore'}">Coimbatore West Enclaves</a></li>
-          <li><a routerLink="/properties" [queryParams]="{city: 'tanjore'}">Tanjore NH-67 Highway</a></li>
-          <li><a routerLink="/properties" [queryParams]="{city: 'madurai'}">Madurai Growth Ring Road</a></li>
-        </ul>
-      </div>
-
-      <!-- Quick Navigation -->
-      <div>
-        <h4>Navigation</h4>
-        <ul class="footer-nav-list">
-          <li><a routerLink="/">Home Showcase</a></li>
-          <li><a routerLink="/properties">All Property Listings</a></li>
-          <li><a routerLink="/contact">Schedule Site Visit</a></li>
-          <li><a routerLink="/login">Investor & Client Portal</a></li>
-          <li><a routerLink="/admin/login">Management Console</a></li>
-        </ul>
-      </div>
-
-      <!-- Corporate Concierge Desk -->
-      <div>
-        <h4>Corporate Desk</h4>
-        <div class="footer-contact-item">
-          <span class="icon">📍</span>
-          <div>
-            <strong>Prime Corridor Headquarters</strong>
-            <p>Trichy – Karur Main Highway, Tamil Nadu, India</p>
-          </div>
-        </div>
-        <div class="footer-contact-item">
-          <span class="icon">📞</span>
-          <div>
-            <strong>VIP Phone Line</strong>
-            <p><a href="tel:+919095392629">+91 90953 92629</a></p>
-          </div>
-        </div>
-        <div class="footer-contact-item">
-          <span class="icon">✉️</span>
-          <div>
-            <strong>Official Inquiries</strong>
-            <p><a href="mailto:contact@vimahamurluxuryproperty.com">contact@vimahamurluxuryproperty.com</a></p>
-          </div>
         </div>
       </div>
     </div>
-    
-    <!-- FOOTER BOTTOM STRIP -->
-    <div class="footer-bottom">
-      <div class="container footer-bottom-inner">
-        <div class="footer-legal-copy">
-          <p class="copyright-line">&copy; 2026 ViMahaMur Luxury Properties Pvt. Ltd. All rights reserved.</p>
-          <p class="disclaimer-line">
-            All plots, floor measurements, and project elevations are subject to DTCP & local authority final sanctions. RERA registrations applicable per project regulations.
-          </p>
-        </div>
 
-        <div class="footer-qr-code">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://vimahamur.vercel.app" alt="ViMahaMur Luxury Properties QR" class="qr-code-img" />
-          <span class="qr-code-label">Scan E-Brochure</span>
-        </div>
+    <!-- Copyright & Disclaimer -->
+    <div class="footer-compact-bottom">
+      <div class="container footer-bottom-flex">
+        <span>&copy; 2026 ViMahaMur Luxury Properties Pvt. Ltd. All rights reserved.</span>
+        <span>Trichy – Karur Highway, Tamil Nadu • Clear Title & DTCP Approved Developments</span>
       </div>
     </div>
   </footer>
