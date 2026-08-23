@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { AuthRole } from '../../shared/models/auth.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,8 @@ export class LoginComponent implements OnInit {
   protected errorMessage = signal<string | null>(null);
   protected successMessage = signal<string | null>(null);
   protected isSubmitting = signal(false);
+  protected readonly isLocalhost = typeof window !== 'undefined' && 
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
   protected logout(): void {
     this.authService.logout();
@@ -59,7 +62,7 @@ export class LoginComponent implements OnInit {
       const googleObj = (window as any).google;
       if (googleObj && googleObj.accounts && googleObj.accounts.id) {
         googleObj.accounts.id.initialize({
-          client_id: '1047124976722-1o68smn1m9lqclg0v2178619.apps.googleusercontent.com',
+          client_id: environment.googleClientId,
           callback: (response: any) => this.handleGoogleCredential(response.credential),
           auto_select: false,
           cancel_on_tap_outside: true
@@ -80,6 +83,10 @@ export class LoginComponent implements OnInit {
       }
     };
     checkGsi();
+  }
+
+  protected bypassGoogleSignIn(): void {
+    this.handleGoogleCredential('mock-customer@vimahamur.local');
   }
 
   protected handleGoogleCredential(token: string): void {

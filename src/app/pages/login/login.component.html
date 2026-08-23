@@ -183,6 +183,13 @@
 
       <div class="social-auth-buttons">
         <div id="google-signin-btn" class="google-btn-wrapper"></div>
+        @if (isLocalhost) {
+          <div class="mock-google-bypass">
+            <button type="button" class="btn-mock-google" (click)="bypassGoogleSignIn()">
+              ⚡ [Dev Mode] Bypass with Mock Google Sign-In
+            </button>
+          </div>
+        }
       </div>
 
       <div class="auth-footer-links">
