@@ -990,35 +990,54 @@
   border-color: #0b1f3a;
 }
 
-/* ABOUT & GLASSMORPHISM */
+/* ABOUT & GLASSMORPHISM - COMPACT LUXURY */
 .about-section {
-  padding: 60px 0;
+  padding: 36px 0 28px;
   background: #f8fafc;
+
+  .eyebrow {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  h2 {
+    font-size: clamp(20px, 2.4vw, 26px);
+    margin: 4px 0 10px;
+    line-height: 1.25;
+    color: #0b1f3a;
+  }
+
+  p {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #64748b;
+    margin-bottom: 0;
+  }
 }
 
 .about-grid {
   display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap: 48px;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
   align-items: center;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 12px;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 30px rgba(11, 31, 58, 0.06);
-  border-radius: 20px;
-  padding: 32px 24px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 16px rgba(11, 31, 58, 0.04);
+  border-radius: 14px;
+  padding: 16px 14px;
   text-align: center;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .stat-card {
@@ -1030,26 +1049,26 @@
 }
 
 .glass-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-4px) scale(1.02);
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(200, 162, 76, 0.5);
-  box-shadow: 0 20px 40px rgba(11, 31, 58, 0.12), 0 0 25px rgba(200, 162, 76, 0.2);
+  box-shadow: 0 10px 24px rgba(11, 31, 58, 0.08), 0 0 16px rgba(200, 162, 76, 0.15);
 }
 
 .stat-card strong {
   display: block;
-  font-size: 38px;
-  font-weight: 900;
+  font-size: 26px;
+  font-weight: 800;
   background: linear-gradient(135deg, #c8a24c 0%, #0b1f3a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   letter-spacing: -0.02em;
 }
 
 .stat-card span {
   color: #64748b;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
 }
 
