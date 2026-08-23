@@ -109,11 +109,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
   protected readonly activeTestimonialIndex = signal(0);
   protected readonly activeFaqIndex = signal<number | null>(null);
 
+  protected readonly allPropertiesCount = computed(() => this.properties().length);
+  protected readonly villasCount = computed(() => this.properties().filter(p => p.category === 'Luxury Villas').length);
+  protected readonly plotsCount = computed(() => this.properties().filter(p => p.category === 'Premium Plots').length);
+  protected readonly commercialCount = computed(() => this.properties().filter(p => p.category === 'Commercial').length);
+
   protected readonly featuredProjects = computed(() => {
     const list = this.properties();
     const cat = this.selectedCategory();
-    if (cat === 'All') return list.slice(0, 3);
-    return list.filter((p) => p.category === cat).slice(0, 3);
+    let filtered = list;
+    if (cat !== 'All') {
+      filtered = list.filter((p) => p.category === cat);
+    }
+    const featured = filtered.filter(p => p.featured);
+    const nonFeatured = filtered.filter(p => !p.featured);
+    return [...featured, ...nonFeatured].slice(0, 6);
   });
 
   protected readonly showVisitModal = signal(false);

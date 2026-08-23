@@ -144,7 +144,12 @@
           <tbody>
             @for (lead of leads(); track lead._id) {
             <tr>
-              <td><strong>{{ lead.customer }}</strong></td>
+              <td>
+                <strong>{{ lead.customer }}</strong>
+                @if (lead.message) {
+                  <div class="sub-text" style="font-size: 11.5px; color: rgba(255,255,255,0.7); margin-top: 3px; max-width: 260px; line-height: 1.3;">💬 {{ lead.message }}</div>
+                }
+              </td>
               <td>
                 <div>📞 {{ lead.phone }}</div>
                 <div class="sub-text">✉️ {{ lead.email || 'N/A' }}</div>
@@ -243,26 +248,26 @@
           <!-- Left inputs column -->
           <div class="form-column">
             <label>
-              <span>Property Name *</span>
-              <input type="text" [(ngModel)]="formModel.name" name="name" required
+              <span>Property Name</span>
+              <input type="text" [(ngModel)]="formModel.name" name="name"
                 placeholder="e.g. Emerald Haven Plots" />
             </label>
 
             <div class="form-row-two">
               <label>
-                <span>Price Label *</span>
-                <input type="text" [(ngModel)]="formModel.price" name="price" required placeholder="e.g. ₹45 Lakh" />
+                <span>Price Label</span>
+                <input type="text" [(ngModel)]="formModel.price" name="price" placeholder="e.g. ₹45 Lakh" />
               </label>
               <label>
-                <span>Numeric Value (Lakhs) *</span>
-                <input type="number" [(ngModel)]="formModel.priceValue" name="priceValue" required />
+                <span>Numeric Value (Lakhs)</span>
+                <input type="number" [(ngModel)]="formModel.priceValue" name="priceValue" placeholder="e.g. 45" />
               </label>
             </div>
 
             <div class="form-row-two">
               <label>
-                <span>Category *</span>
-                <select [(ngModel)]="formModel.category" name="category" required>
+                <span>Category</span>
+                <select [(ngModel)]="formModel.category" name="category">
                   <option value="Luxury">Luxury</option>
                   <option value="Luxury Villas">Luxury Villas</option>
                   <option value="Plots">Plots</option>
@@ -271,26 +276,26 @@
                 </select>
               </label>
               <label>
-                <span>Area Size *</span>
-                <input type="text" [(ngModel)]="formModel.area" name="area" required placeholder="e.g. 1,500 sq ft" />
+                <span>Area Size</span>
+                <input type="text" [(ngModel)]="formModel.area" name="area" placeholder="e.g. 1,500 sq ft" />
               </label>
             </div>
 
             <label>
-              <span>Location *</span>
-              <input type="text" [(ngModel)]="formModel.location" name="location" required
+              <span>Location</span>
+              <input type="text" [(ngModel)]="formModel.location" name="location"
                 placeholder="e.g. Bypass Road, Salem" />
             </label>
 
             <label>
-              <span>Sub-type Name *</span>
-              <input type="text" [(ngModel)]="formModel.type" name="type" required
+              <span>Sub-type Name</span>
+              <input type="text" [(ngModel)]="formModel.type" name="type"
                 placeholder="e.g. Premium Villa Plots" />
             </label>
 
             <label>
-              <span>Description *</span>
-              <textarea rows="4" [(ngModel)]="formModel.description" name="description" required
+              <span>Description</span>
+              <textarea rows="4" [(ngModel)]="formModel.description" name="description"
                 placeholder="Describe the property highlights, design guidelines, and location advantages..."></textarea>
             </label>
 
@@ -305,7 +310,7 @@
           <div class="form-column">
             <!-- PRIMARY IMAGE UPLOADER -->
             <div class="upload-container-box">
-              <span class="field-label">Primary Cover Image *</span>
+              <span class="field-label">Primary Cover Image</span>
               <div class="upload-field-layout">
                 @if (formModel.image) {
                 <div class="image-preview-wrapper">

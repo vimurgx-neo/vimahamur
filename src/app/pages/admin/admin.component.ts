@@ -267,16 +267,33 @@ export class AdminComponent implements OnInit {
 
   // CRUD Operations
   protected saveProperty(): void {
-    if (!this.formModel.name || !this.formModel.price || !this.formModel.image) {
-      alert('Please fill out all required fields (Name, Price, Primary Image)');
+    const trimmedName = this.formModel.name?.trim();
+    if (!trimmedName) {
+      alert('Please enter a Property Name.');
       return;
     }
 
     this.isSubmitting.set(true);
 
-    // Prepare payload matching property model categories
+    // Prepare payload with default fallbacks for optional fields
+    const defaultCover = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80';
+    const numPrice = Number(this.formModel.priceValue);
+
     const payload: any = {
       ...this.formModel,
+      name: trimmedName,
+      price: this.formModel.price?.trim() || (numPrice > 0 ? `₹${numPrice} Lakh` : 'Price on Request'),
+      priceValue: !isNaN(numPrice) && numPrice >= 0 ? numPrice : 0,
+      location: this.formModel.location?.trim() || 'Tamil Nadu, India',
+      area: this.formModel.area?.trim() || 'N/A',
+      type: this.formModel.type?.trim() || 'Premium Plots',
+      category: this.formModel.category || 'Plots',
+      description: this.formModel.description?.trim() || `${trimmedName} - Premium property listing by ViMahaMur Luxury Properties.`,
+      image: this.formModel.image?.trim() || defaultCover,
+      gallery: this.formModel.gallery?.length ? this.formModel.gallery : [this.formModel.image?.trim() || defaultCover],
+      amenities: this.formModel.amenities ?? [],
+      nearbyPlaces: this.formModel.nearbyPlaces ?? [],
+      floorPlans: this.formModel.floorPlans ?? []
     };
 
     if (this.modalMode() === 'create') {
@@ -288,7 +305,8 @@ export class AdminComponent implements OnInit {
         },
         error: (err) => {
           this.isSubmitting.set(false);
-          alert(err.error?.message ?? 'Failed to create property.');
+          const detail = err.error?.errors?.map((e: any) => `• ${e.msg}`).join('\n') || err.error?.message || 'Failed to create property.';
+          alert(`Failed to create property:\n${detail}`);
         }
       });
     } else {
@@ -302,7 +320,8 @@ export class AdminComponent implements OnInit {
         },
         error: (err) => {
           this.isSubmitting.set(false);
-          alert(err.error?.message ?? 'Failed to update property.');
+          const detail = err.error?.errors?.map((e: any) => `• ${e.msg}`).join('\n') || err.error?.message || 'Failed to update property.';
+          alert(`Failed to update property:\n${detail}`);
         }
       });
     }

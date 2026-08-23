@@ -9,15 +9,15 @@ export const propertyRouter = Router();
 
 // Validation schema
 const propertyValidation = [
-  body('name').trim().notEmpty().withMessage('Name is required'),
-  body('price').trim().notEmpty().withMessage('Price is required'),
-  body('priceValue').isNumeric().withMessage('Price numeric value is required'),
-  body('location').trim().notEmpty().withMessage('Location is required'),
-  body('area').trim().notEmpty().withMessage('Area is required'),
-  body('type').trim().notEmpty().withMessage('Type is required'),
-  body('image').trim().notEmpty().withMessage('Primary image is required'),
-  body('category').isIn(['Luxury', 'Luxury Villas', 'Plots', 'Premium Plots', 'Commercial']).withMessage('Category must be Luxury, Luxury Villas, Plots, Premium Plots, or Commercial'),
-  body('description').trim().notEmpty().withMessage('Description is required')
+  body('name').trim().notEmpty().withMessage('Property Name is required'),
+  body('price').optional({ values: 'falsy' }).trim(),
+  body('priceValue').optional({ values: 'falsy' }).isNumeric().withMessage('Price numeric value must be a number'),
+  body('location').optional({ values: 'falsy' }).trim(),
+  body('area').optional({ values: 'falsy' }).trim(),
+  body('type').optional({ values: 'falsy' }).trim(),
+  body('image').optional({ values: 'falsy' }).trim(),
+  body('category').optional({ values: 'falsy' }).isIn(['Luxury', 'Luxury Villas', 'Plots', 'Premium Plots', 'Commercial']).withMessage('Category must be Luxury, Luxury Villas, Plots, Premium Plots, or Commercial'),
+  body('description').optional({ values: 'falsy' }).trim()
 ];
 
 // Helper to check for validation errors

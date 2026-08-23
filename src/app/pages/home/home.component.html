@@ -85,60 +85,129 @@
 </section>
 
 <!-- FEATURED INVENTORY WITH CATEGORY CHIPS -->
-<section class="feature-section">
+<section class="feature-section" id="inventory">
   <div class="container">
-    <div class="section-header">
-      <div>
-        <div class="eyebrow">Signature Inventory</div>
+    <div class="section-header-row">
+      <div class="section-title-wrap">
+        <div class="eyebrow-tag">
+          <span class="pulse-dot"></span>
+          <span>Signature Inventory</span>
+        </div>
         <h2>Curated properties for high-intent buyers</h2>
+        <p class="section-subtitle">Explore prime villa layouts, investment plots, and commercial corridors with verified titles and infrastructure readiness.</p>
       </div>
-      <a routerLink="/properties" class="btn btn-outline">View All Listings</a>
+      <div class="section-action-wrap">
+        <a routerLink="/properties" class="btn btn-luxury-outline">
+          <span>View All Listings</span>
+          <span class="btn-arrow">➔</span>
+        </a>
+      </div>
     </div>
 
     <!-- Category Switcher Chips -->
     <div class="category-switcher" role="tablist" aria-label="Filter properties by category">
-      <button class="chip-btn" [class.active]="selectedCategory() === 'All'" (click)="selectedCategory.set('All')">🌐 All Properties</button>
-      <button class="chip-btn" [class.active]="selectedCategory() === 'Luxury Villas'" (click)="selectedCategory.set('Luxury Villas')">💎 Luxury Villas</button>
-      <button class="chip-btn" [class.active]="selectedCategory() === 'Premium Plots'" (click)="selectedCategory.set('Premium Plots')">📐 Premium Plots</button>
-      <button class="chip-btn" [class.active]="selectedCategory() === 'Commercial'" (click)="selectedCategory.set('Commercial')">🏢 Commercial</button>
+      <button class="chip-btn" [class.active]="selectedCategory() === 'All'" (click)="selectedCategory.set('All')">
+        <span class="chip-icon">🌐</span>
+        <span class="chip-text">All Properties</span>
+        @if (allPropertiesCount() > 0) { <span class="chip-count">{{ allPropertiesCount() }}</span> }
+      </button>
+      <button class="chip-btn" [class.active]="selectedCategory() === 'Luxury Villas'" (click)="selectedCategory.set('Luxury Villas')">
+        <span class="chip-icon">💎</span>
+        <span class="chip-text">Luxury Villas</span>
+        @if (villasCount() > 0) { <span class="chip-count">{{ villasCount() }}</span> }
+      </button>
+      <button class="chip-btn" [class.active]="selectedCategory() === 'Premium Plots'" (click)="selectedCategory.set('Premium Plots')">
+        <span class="chip-icon">📐</span>
+        <span class="chip-text">Premium Plots</span>
+        @if (plotsCount() > 0) { <span class="chip-count">{{ plotsCount() }}</span> }
+      </button>
+      <button class="chip-btn" [class.active]="selectedCategory() === 'Commercial'" (click)="selectedCategory.set('Commercial')">
+        <span class="chip-icon">🏢</span>
+        <span class="chip-text">Commercial</span>
+        @if (commercialCount() > 0) { <span class="chip-count">{{ commercialCount() }}</span> }
+      </button>
     </div>
 
     <div class="card-grid">
-      @for (item of featuredProjects(); track item.name) {
+      @for (item of featuredProjects(); track (item._id || item.name)) {
         <article class="property-card">
           <div class="property-image">
-            <img [src]="item.image" [alt]="item.name" />
-            <span class="badge">{{ item.type }}</span>
+            <img [src]="item.image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80'" [alt]="item.name" loading="lazy" />
+            <div class="card-badge-row">
+              <span class="badge category-badge">{{ item.type || item.category }}</span>
+              @if (item.featured) {
+                <span class="badge featured-badge">✨ Featured</span>
+              }
+            </div>
             <button 
               type="button" 
               class="bookmark-btn" 
               [class.saved]="isSaved(item._id)" 
               (click)="toggleSaveProperty($event, item._id)"
               [attr.aria-label]="isSaved(item._id) ? 'Unsave Property' : 'Save Property'">
-              {{ isSaved(item._id) ? '❤️' : '🤍' }}
+              <span class="heart-icon">{{ isSaved(item._id) ? '❤️' : '🤍' }}</span>
             </button>
           </div>
           <div class="property-body">
-            <h3>{{ item.name }}</h3>
-            <p class="location">📍 {{ item.location }}</p>
+            <div class="property-main-info">
+              <h3>{{ item.name }}</h3>
+              <p class="location">
+                <span class="loc-icon">📍</span>
+                <span>{{ item.location }}</span>
+              </p>
+            </div>
+
             <div class="meta-line">
-              <span>{{ item.price }}</span>
-              <span>{{ item.area }}</span>
+              <div class="price-box">
+                <span class="meta-label">Starting Price</span>
+                <span class="price-val">{{ item.price || 'Price on Request' }}</span>
+              </div>
+              <div class="area-box">
+                <span class="meta-label">Area</span>
+                <span class="area-val">{{ item.area || 'Master Layout' }}</span>
+              </div>
             </div>
-            <div class="stacked-tag">
-              @for (amenity of item.amenities.slice(0, 3); track amenity) {
-                <span>{{ amenity }}</span>
-              }
-            </div>
+
+            @if (item.amenities && item.amenities.length > 0) {
+              <div class="stacked-tag">
+                @for (amenity of item.amenities.slice(0, 3); track amenity) {
+                  <span class="tag-pill">✓ {{ amenity }}</span>
+                }
+              </div>
+            }
+
             <div class="card-actions">
-              <button class="btn btn-primary" (click)="openVisitModal()">Book Visit</button>
-              <a class="btn btn-secondary" [routerLink]="['/property', getPropertySlug(item.name)]">Details</a>
+              <button class="btn btn-card-primary" (click)="openVisitModal()">
+                <span>Schedule Visit</span>
+              </button>
+              <a class="btn btn-card-secondary" [routerLink]="['/property', getPropertySlug(item.name)]">
+                <span>Details</span>
+                <span class="arrow-small">➔</span>
+              </a>
             </div>
           </div>
         </article>
       } @empty {
-        <div class="empty-state">
-          <p>No featured properties found in this category.</p>
+        <div class="empty-inventory-state">
+          <div class="empty-state-visual">
+            <div class="empty-icon-ring">
+              <span class="empty-icon">🏛️</span>
+            </div>
+            <div class="empty-sparkle">✨</div>
+          </div>
+          <h3>Curated Inventory Arriving Soon</h3>
+          <p>
+            We are currently onboarding exclusive master-planned plots and bespoke luxury developments in this category. 
+            Connect with our property concierge for private pre-launch allotments.
+          </p>
+          <div class="empty-state-actions">
+            <button type="button" class="btn btn-luxury-gold" (click)="selectedCategory.set('All')">
+              <span>🌐 View All Available Properties</span>
+            </button>
+            <button type="button" class="btn btn-luxury-dark" (click)="openVisitModal()">
+              <span>📅 Request Pre-launch VIP Access</span>
+            </button>
+          </div>
         </div>
       }
     </div>
@@ -276,7 +345,7 @@
     <div class="lead-form-wrapper">
       <form class="lead-form" (ngSubmit)="submitEnquiry()">
         <label><span>Name</span><input type="text" [(ngModel)]="enquiry.name" name="name" placeholder="Your Name" required /></label>
-        <label><span>Phone</span><input type="tel" [(ngModel)]="enquiry.phone" name="phone" placeholder="+91 90953 92629" required /></label>
+        <label><span>Phone</span><input type="tel" [(ngModel)]="enquiry.phone" name="phone" placeholder="+91 98765 43210" required /></label>
         <label><span>Email</span><input type="email" [(ngModel)]="enquiry.email" name="email" placeholder="name@example.com" required /></label>
         <label><span>City</span><input type="text" [(ngModel)]="enquiry.city" name="city" placeholder="Bengaluru" required /></label>
         <label>

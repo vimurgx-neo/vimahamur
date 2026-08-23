@@ -212,9 +212,18 @@
     .input-icon {
       position: absolute;
       left: 14px;
-      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
       color: rgba(255, 255, 255, 0.4);
       pointer-events: none;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
     }
 
     input {
@@ -247,10 +256,20 @@
       background: transparent;
       border: none;
       color: rgba(255, 255, 255, 0.5);
-      font-size: 15px;
       cursor: pointer;
       padding: 4px;
       border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      transition: color 0.2s ease;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
 
       &:hover {
         color: #ffffff;
