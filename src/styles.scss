@@ -142,11 +142,19 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
   position: relative;
 }
 
+/* COMPACT CORPORATE LUXURY FOOTER */
+.site-footer {
+  color: #cbd5e1;
+  background: #061121;
+  border-top: 1px solid rgba(200, 162, 76, 0.35);
+  position: relative;
+}
+
 /* VIP NEWSLETTER BRIEFING STRIP */
 .footer-newsletter-wrap {
-  padding: 40px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(11, 31, 58, 0.8) 0%, rgba(6, 17, 33, 0.95) 100%);
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(180deg, rgba(11, 31, 58, 0.7) 0%, rgba(6, 17, 33, 0.9) 100%);
 }
 
 .newsletter-card {
@@ -154,52 +162,52 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 16px;
 }
 
 .newsletter-text {
-  max-width: 520px;
+  max-width: 480px;
 
   .nl-badge {
     display: inline-block;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
     color: var(--gold-light);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 2px;
   }
 
   h3 {
-    font-size: clamp(20px, 2.2vw, 24px);
+    font-size: 16px;
     color: #ffffff;
-    margin: 0 0 6px;
+    margin: 0 0 2px;
     font-weight: 700;
   }
 
   p {
-    font-size: 13.5px;
+    font-size: 12px;
     color: #94a3b8;
-    line-height: 1.5;
+    line-height: 1.4;
     margin: 0;
   }
 }
 
 .newsletter-form {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
-  max-width: 460px;
-  min-width: 280px;
+  max-width: 400px;
+  min-width: 260px;
 
   input {
     flex: 1;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 8px 12px;
     color: #ffffff;
-    font-size: 13.5px;
+    font-size: 12.5px;
     outline: none;
     transition: border-color 0.2s ease;
 
@@ -209,41 +217,41 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
 
     &:focus {
       border-color: var(--gold);
-      background: rgba(255, 255, 255, 0.09);
+      background: rgba(255, 255, 255, 0.08);
     }
   }
 
   button {
     white-space: nowrap;
-    padding: 12px 22px;
-    font-size: 13.5px;
-    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+    border-radius: 8px;
   }
 }
 
 /* MAIN 4-COLUMN FOOTER GRID */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
-  gap: 40px;
-  padding: 56px 0 44px;
+  grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
+  gap: 28px;
+  padding: 30px 0 22px;
 }
 
 .footer-brand-column {
   .brand-footer-wrap {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 10px;
   }
 
   .footer-brand-emblem {
-    width: 46px;
-    height: 46px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     border: 1.5px solid var(--gold);
     object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   .brand-footer-text {
@@ -251,7 +259,7 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
     flex-direction: column;
 
     .brand-name {
-      font-size: 20px;
+      font-size: 17px;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: 0.02em;
@@ -259,59 +267,59 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
     }
 
     .brand-sub {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--gold-light);
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       font-weight: 700;
     }
   }
 
   .brand-desc {
     color: #94a3b8;
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 18px;
-    max-width: 330px;
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 12px;
+    max-width: 280px;
   }
 }
 
 .compliance-badges {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 20px;
+  gap: 4px;
+  margin-bottom: 12px;
 
   .badge-pill {
     display: inline-flex;
     align-items: center;
-    font-size: 11.5px;
+    font-size: 10.5px;
     font-weight: 600;
     color: #cbd5e1;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 4px 10px;
-    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 3px 8px;
+    border-radius: 5px;
     width: fit-content;
   }
 }
 
 .site-footer h4 {
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   color: var(--gold-light);
-  font-size: 14px;
+  font-size: 12.5px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   position: relative;
-  padding-bottom: 8px;
+  padding-bottom: 5px;
 
   &::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 24px;
+    width: 20px;
     height: 2px;
     background: var(--gold);
     border-radius: 2px;
@@ -323,45 +331,45 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 10px;
+  gap: 6px;
 
   li a {
     color: #94a3b8;
-    font-size: 13.5px;
+    font-size: 12.5px;
     text-decoration: none;
     transition: all 0.2s ease;
     display: inline-block;
 
     &:hover {
       color: var(--gold-light);
-      transform: translateX(4px);
+      transform: translateX(3px);
     }
   }
 }
 
 .footer-contact-item {
   display: flex;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 8px;
+  margin-bottom: 10px;
 
   .icon {
-    font-size: 16px;
+    font-size: 14px;
     flex-shrink: 0;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 
   strong {
     display: block;
-    font-size: 13px;
+    font-size: 12px;
     color: #ffffff;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
   }
 
   p {
-    font-size: 12.5px;
+    font-size: 11.5px;
     color: #94a3b8;
     margin: 0;
-    line-height: 1.45;
+    line-height: 1.4;
 
     a {
       color: #94a3b8;
@@ -377,34 +385,34 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
 
 .footer-socials {
   display: flex;
-  gap: 10px;
-  margin-top: 8px;
+  gap: 8px;
+  margin-top: 6px;
 
   a {
     color: #cbd5e1;
     background: rgba(255, 255, 255, 0.05);
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    transition: all 0.25s ease;
+    transition: all 0.2s ease;
     border: 1px solid rgba(255, 255, 255, 0.08);
 
     &:hover {
       color: #ffffff;
       background: var(--gold);
       border-color: var(--gold);
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(200, 162, 76, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(200, 162, 76, 0.35);
     }
   }
 }
 
 /* FOOTER BOTTOM LEGAL STRIP */
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 24px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 14px 0;
   background: #040c17;
 }
 
@@ -413,23 +421,23 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 14px;
 }
 
 .footer-legal-copy {
   max-width: 780px;
 
   .copyright-line {
-    font-size: 13px;
+    font-size: 12px;
     color: #ffffff;
     font-weight: 600;
-    margin: 0 0 4px;
+    margin: 0 0 2px;
   }
 
   .disclaimer-line {
-    font-size: 11.5px;
+    font-size: 10.5px;
     color: #64748b;
-    line-height: 1.5;
+    line-height: 1.4;
     margin: 0;
   }
 }
@@ -438,18 +446,18 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
   text-align: center;
   flex-shrink: 0;
 
   .qr-code-img {
-    width: 70px;
-    height: 70px;
-    padding: 4px;
+    width: 50px;
+    height: 50px;
+    padding: 3px;
     background: #ffffff;
-    border-radius: 6px;
+    border-radius: 4px;
     border: 1.5px solid rgba(200, 162, 76, 0.4);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s ease;
 
     &:hover {
@@ -458,11 +466,11 @@ label span { color: var(--text); font-size: 14px; font-weight: 500; letter-spaci
   }
 
   .qr-code-label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     color: var(--gold-light);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
   }
 }
 
