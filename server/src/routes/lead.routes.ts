@@ -9,9 +9,12 @@ export const leadRouter = Router();
 leadRouter.post('/', [
   body('customer').trim().notEmpty().withMessage('Name is required'),
   body('phone').trim().notEmpty().withMessage('Phone number is required'),
-  body('property').trim().notEmpty().withMessage('Property interest is required'),
-  body('source').trim().notEmpty().withMessage('Source is required'),
-  body('email').optional().isEmail().withMessage('Valid email is required')
+  body('property').optional().trim(),
+  body('source').optional().trim(),
+  body('email').optional().trim(),
+  body('city').optional().trim(),
+  body('budget').optional().trim(),
+  body('message').optional().trim()
 ], async (request: Request, response: Response, next: NextFunction) => {
   try {
     const errors = validationResult(request);
@@ -19,7 +22,12 @@ leadRouter.post('/', [
       response.status(422).json({ message: 'Please correct the highlighted fields.', errors: errors.array() });
       return;
     }
-    const lead = await LeadModel.create(request.body);
+    const data = {
+      ...request.body,
+      property: request.body.property && request.body.property.trim() ? request.body.property : 'General Enquiry',
+      source: request.body.source && request.body.source.trim() ? request.body.source : 'Contact Enquiry'
+    };
+    const lead = await LeadModel.create(data);
     response.status(201).json({ data: lead });
   } catch (error) {
     next(error);

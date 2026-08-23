@@ -205,9 +205,9 @@ export class MarketingPageComponent {
       customer: this.enquiry.name,
       phone: this.enquiry.phone,
       email: this.enquiry.email,
-      property: this.enquiry.property,
-      message: this.enquiry.message,
-      source: `Marketing page (${this.page()})`
+      property: this.enquiry.property || 'General Enquiry',
+      message: this.enquiry.city ? `Location: ${this.enquiry.city}. ${this.enquiry.message}` : this.enquiry.message,
+      source: this.page() === 'contact' ? 'Contact Page Enquiry' : `Marketing page (${this.page()})`
     }).subscribe({
       next: () => {
         this.isSubmitting.set(false);
@@ -215,6 +215,8 @@ export class MarketingPageComponent {
         this.enquiry.name = '';
         this.enquiry.phone = '';
         this.enquiry.email = '';
+        this.enquiry.city = '';
+        this.enquiry.property = 'Meridian Heights';
         this.enquiry.message = '';
         window.setTimeout(() => this.showConfirmation.set(false), 4000);
       },
