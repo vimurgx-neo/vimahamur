@@ -94,44 +94,6 @@
           </div>
         </div>
 
-        <!-- Interactive Mortgage Calculator -->
-        <div class="details-section mortgage-calculator-box glass-card">
-          <h3>Mortgage & EMI Estimator</h3>
-          <p>Compute your monthly payments dynamically based on interest rates and loan tenures.</p>
-          <div class="calculator-grid">
-            <div class="calc-inputs">
-              <label>
-                <span>Property Value (₹)</span>
-                <input type="number" [(ngModel)]="priceInput" name="calcPrice" />
-              </label>
-              <label>
-                <span>Down Payment (₹)</span>
-                <input type="number" [(ngModel)]="downPaymentInput" name="calcDown" />
-              </label>
-              <div class="calc-row">
-                <label>
-                  <span>Interest Rate (%)</span>
-                  <input type="number" step="0.1" [(ngModel)]="interestRateInput" name="calcInterest" />
-                </label>
-                <label>
-                  <span>Duration (Years)</span>
-                  <input type="number" [(ngModel)]="tenureInput" name="calcTenure" />
-                </label>
-              </div>
-            </div>
-            <div class="calc-outputs">
-              <div class="output-card">
-                <span>Calculated Loan Amount</span>
-                <strong>₹{{ loanAmount() | number }}</strong>
-              </div>
-              <div class="output-card highlighted">
-                <span>Estimated Monthly EMI</span>
-                <strong>₹{{ monthlyEmi() | number }} / mo</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Neighborhood Maps integration -->
         <div class="details-section">
           <h3>Neighborhood Infrastructure</h3>
