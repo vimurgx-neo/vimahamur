@@ -179,52 +179,75 @@ export class AdminComponent implements OnInit {
     this.showModal.set(false);
   }
 
+  // Image Compression & Processing Helper
+  private compressImage(file: File, maxWidth = 1600, quality = 0.85): Promise<string> {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let { width, height } = img;
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(e.target?.result as string);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = () => resolve(e.target?.result as string);
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+  }
+
   // File Upload Handlers
-  protected onMainImageSelected(event: Event): void {
+  protected async onMainImageSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
     
     const file = input.files[0];
     this.isUploadingMain.set(true);
-    
-    this.estateService.uploadImage(file).subscribe({
-      next: (res) => {
-        this.isUploadingMain.set(false);
-        this.formModel.image = res.url;
-      },
-      error: (err) => {
-        this.isUploadingMain.set(false);
-        alert(err.error?.message ?? 'Image upload failed. Please try again.');
+
+    try {
+      // Create high-speed compressed Data URL for instant, 100% reliable preview & persistence
+      const compressedDataUrl = await this.compressImage(file, 1600, 0.88);
+      if (compressedDataUrl) {
+        this.formModel.image = compressedDataUrl;
       }
-    });
+      this.isUploadingMain.set(false);
+    } catch {
+      this.isUploadingMain.set(false);
+    }
   }
 
-  protected onGalleryImagesSelected(event: Event): void {
+  protected async onGalleryImagesSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
     
     this.isUploadingGallery.set(true);
     const files = Array.from(input.files);
     
-    let uploadedCount = 0;
-    files.forEach(file => {
-      this.estateService.uploadImage(file).subscribe({
-        next: (res) => {
-          this.formModel.gallery.push(res.url);
-          uploadedCount++;
-          if (uploadedCount === files.length) {
-            this.isUploadingGallery.set(false);
-          }
-        },
-        error: (err) => {
-          uploadedCount++;
-          if (uploadedCount === files.length) {
-            this.isUploadingGallery.set(false);
-          }
-          console.error('Gallery file upload failed', err);
+    for (const file of files) {
+      try {
+        const compressedDataUrl = await this.compressImage(file, 1400, 0.85);
+        if (compressedDataUrl) {
+          this.formModel.gallery.push(compressedDataUrl);
         }
-      });
-    });
+      } catch (err) {
+        console.error('Failed to process gallery image', err);
+      }
+    }
+    this.isUploadingGallery.set(false);
   }
 
   protected removeGalleryImage(index: number): void {

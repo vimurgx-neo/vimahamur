@@ -17,6 +17,7 @@ import bcrypt from 'bcrypt';
 import { UserModel } from './models/user.model.js';
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin: (origin, callback) => {
@@ -28,8 +29,9 @@ app.use(cors({
   },
   credentials: true
 }));
-app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: 'draft-8', legacyHeaders: false }));
-app.use(express.json({ limit: '10mb' }));
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 500, standardHeaders: 'draft-8', legacyHeaders: false }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(morgan('combined'));
 
 // Ensure uploads folder exists
