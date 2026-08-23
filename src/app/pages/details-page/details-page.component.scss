@@ -114,22 +114,29 @@
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  height: 420px;
+  min-height: 360px;
+  max-height: 580px;
+  background: #081729;
   margin-bottom: 32px;
   box-shadow: var(--shadow-medium);
   cursor: zoom-in;
   border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .primary-showcase img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-height: 580px;
+  object-fit: contain;
+  background: #081729;
   transition: transform 0.4s ease;
 }
 
 .primary-showcase:hover img {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 .zoom-overlay {
@@ -137,11 +144,15 @@
   bottom: 20px;
   right: 20px;
   background: rgba(11, 31, 58, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   padding: 8px 16px;
   border-radius: 8px;
   color: var(--white);
   font-size: 12px;
   font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .lead-description {
@@ -577,15 +588,15 @@
     padding: 32px 0 48px;
   }
   .primary-showcase {
-    height: 300px;
+    min-height: 260px;
+    max-height: 420px;
   }
 }
 
 @media (max-width: 640px) {
   .details-card,
   .sidebar-card,
-  .related-list-card,
-  .mortgage-calculator-box {
+  .related-list-card {
     padding: 20px;
   }
   
@@ -594,7 +605,8 @@
   }
   
   .primary-showcase {
-    height: 220px;
+    min-height: 220px;
+    max-height: 360px;
     margin-bottom: 20px;
   }
   
