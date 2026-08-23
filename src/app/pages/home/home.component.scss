@@ -29,20 +29,21 @@
   pointer-events: none;
 }
 
-/* FLOATING CIRCULAR VIMAHAMUR LOGO WATERMARK */
+/* FLOATING CIRCULAR VIMAHAMUR LOGO WATERMARK MASK */
 .hero-watermark-overlay {
   position: absolute;
-  bottom: 12px;
-  right: 54px;
+  bottom: 16px;
+  right: 16px;
   z-index: 10;
-  width: 114px;
-  height: 114px;
+  width: 124px;
+  height: 124px;
   border-radius: 50%;
   border: 2.5px solid var(--gold);
-  /* Smooth circular radial dark aura centered over sparkle icon expanding dark coverage from right:0 to right:180px */
+  /* Full solid mask & radial dark aura covering the Gemini symbol */
   box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.85),
-    0 0 42px 24px rgba(6, 17, 33, 0.98);
+    0 8px 28px rgba(0, 0, 0, 0.92),
+    0 0 50px 30px rgba(6, 17, 33, 0.98),
+    0 0 0 4px rgba(200, 162, 76, 0.25);
   background: #061121 url('/vimahamur-logo.jpg') center/cover no-repeat;
   opacity: 1 !important;
   pointer-events: none;
@@ -50,9 +51,9 @@
 }
 
 @keyframes pulseLogo {
-  0% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 32px 18px rgba(6, 17, 33, 0.96); }
-  50% { transform: scale(1.03); box-shadow: 0 12px 30px rgba(216, 179, 100, 0.4), 0 0 36px 22px rgba(6, 17, 33, 0.98); }
-  100% { transform: scale(1); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 32px 18px rgba(6, 17, 33, 0.96); }
+  0% { transform: scale(1); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.9), 0 0 40px 24px rgba(6, 17, 33, 0.96), 0 0 0 4px rgba(200, 162, 76, 0.2); }
+  50% { transform: scale(1.04); box-shadow: 0 12px 34px rgba(216, 179, 100, 0.45), 0 0 50px 32px rgba(6, 17, 33, 0.98), 0 0 0 6px rgba(200, 162, 76, 0.35); }
+  100% { transform: scale(1); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.9), 0 0 40px 24px rgba(6, 17, 33, 0.96), 0 0 0 4px rgba(200, 162, 76, 0.2); }
 }
 
 .hero-grid {
