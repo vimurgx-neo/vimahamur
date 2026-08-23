@@ -1,0 +1,9 @@
+{
+  "outputDirectory": "dist/vimahamur-luxury-properties/browser",
+  "rewrites": [
+    {
+      "source": "/((?!api/|.*\\..*$).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
