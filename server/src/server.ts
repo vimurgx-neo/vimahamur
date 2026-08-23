@@ -13,6 +13,8 @@ import { leadRouter } from './routes/lead.routes.js';
 import { propertyRouter } from './routes/property.routes.js';
 import { blogRouter } from './routes/blog.routes.js';
 import { bookingRouter } from './routes/booking.routes.js';
+import bcrypt from 'bcrypt';
+import { UserModel } from './models/user.model.js';
 
 const app = express();
 app.use(helmet({ contentSecurityPolicy: false }));
@@ -48,8 +50,32 @@ app.use('/api/bookings', bookingRouter);
 app.use(notFound);
 app.use(errorHandler);
 
+async function ensureSuperAdmin(): Promise<void> {
+  try {
+    const email = (process.env.SUPER_ADMIN_EMAIL || 'superadmin@vimahamur.local').toLowerCase().trim();
+    const password = process.env.SUPER_ADMIN_PASSWORD || 'ChangeMe!12345';
+    const existing = await UserModel.findOne({ email });
+    if (!existing) {
+      const passwordHash = await bcrypt.hash(password, 12);
+      await UserModel.create({
+        name: 'ViMahaMur Luxury Properties Super Admin',
+        email,
+        phone: '+91 99999 88888',
+        passwordHash,
+        role: 'SuperAdmin'
+      });
+      console.info(`[AUTH] Auto-created initial SuperAdmin user: ${email}`);
+    }
+  } catch (err) {
+    console.error('[AUTH] Failed to verify/seed initial SuperAdmin:', err);
+  }
+}
+
 mongoose.connect(env.mongoUri)
-  .then(() => app.listen(env.port, '0.0.0.0', () => console.info(`ViMahaMur Luxury Properties API listening on 0.0.0.0:${env.port}`)))
+  .then(async () => {
+    await ensureSuperAdmin();
+    app.listen(env.port, '0.0.0.0', () => console.info(`ViMahaMur Luxury Properties API listening on 0.0.0.0:${env.port}`));
+  })
   .catch((error: unknown) => {
     console.error('MongoDB connection failed', error);
     process.exit(1);
