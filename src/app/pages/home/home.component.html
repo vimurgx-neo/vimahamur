@@ -6,15 +6,23 @@
   <div class="hero-watermark-overlay"></div>
   <div class="container hero-grid">
     <div class="hero-copy">
-      <div class="eyebrow">Luxury Land Development</div>
-      <h1>YOUR DREAM. YOUR LAND.</h1>
+      <div class="hero-live-badge">
+        <span class="live-beacon"></span>
+        <span>Verified DTCP & RERA Gated Enclaves</span>
+      </div>
+      <h1 class="shimmer-title">YOUR DREAM. YOUR LAND.</h1>
       <p class="hero-subtitle">
-        Premium secure plots in a gated residential community.
+        Premium secure plots & bespoke villa enclaves across South India's highest growth corridors.
       </p>
 
       <div class="hero-actions">
-        <a class="btn btn-primary" routerLink="/properties">Explore Plots</a>
-        <button class="btn btn-secondary" type="button" (click)="openVisitModal()">Book Visit</button>
+        <a class="btn btn-primary btn-shimmer" routerLink="/properties">
+          <span>Explore Plots</span>
+          <span class="btn-arrow">➔</span>
+        </a>
+        <button class="btn btn-secondary btn-glass" type="button" (click)="openVisitModal()">
+          <span>📅 Book VIP Site Tour</span>
+        </button>
       </div>
 
       <div class="trust-indicators-row">
@@ -373,6 +381,23 @@
 @if (showThankYou()) {
   <div class="toast animate-toast">✅ Enquiry received. Our sales team will contact you shortly.</div>
 }
+
+<!-- FLOATING VIP CONCIERGE WIDGET -->
+<div class="floating-concierge-fab" aria-label="Quick Actions">
+  <button type="button" class="fab-visit-btn" (click)="openVisitModal()">
+    <span class="fab-pulse-ring"></span>
+    <span class="fab-icon">📅</span>
+    <span class="fab-label">Book Site Visit</span>
+  </button>
+  <a href="https://wa.me/919095392629?text=Hello%20ViMahaMur%20Luxury%20Properties%2C%20I%20am%20interested%20in%20your%20plots." 
+     target="_blank" 
+     rel="noopener" 
+     class="fab-whatsapp-btn" 
+     aria-label="WhatsApp Concierge">
+    <span class="fab-wa-icon">💬</span>
+    <span class="fab-tooltip">Chat with Property Advisor</span>
+  </a>
+</div>
 
 @if (showVisitModal()) {
   <div class="modal-backdrop" (click)="closeVisitModal()">
