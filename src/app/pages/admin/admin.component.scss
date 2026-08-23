@@ -597,19 +597,48 @@
 .form-column {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Reduced from 16px */
+  gap: 12px;
 
   label {
     display: flex;
     flex-direction: column;
     gap: 6px;
 
-    span {
-      font-size: 12px;
+    .label-heading-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .label-title, .field-label {
+      font-size: 13px;
       font-weight: 700;
-      color: #475569;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
+      color: #1e293b;
+      letter-spacing: -0.01em;
+      text-transform: none;
+    }
+
+    .required-pill {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #0b1f3a;
+      background: rgba(200, 162, 76, 0.2);
+      border: 1px solid rgba(200, 162, 76, 0.4);
+      padding: 1px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .optional-pill {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #64748b;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 1px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
     }
 
     input[type="text"],
@@ -645,12 +674,30 @@
   flex-direction: column;
   gap: 8px;
 
+  .label-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
   .field-label {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
-    color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    color: #1e293b;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+
+  .optional-pill {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 1px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
   }
 }
 
