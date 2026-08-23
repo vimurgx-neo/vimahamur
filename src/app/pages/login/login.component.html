@@ -57,6 +57,13 @@
             </div>
             
             <form class="auth-form" (ngSubmit)="submitLogin()">
+              <div class="demo-helpers">
+                <span class="demo-label">Quick Sign-in:</span>
+                <button type="button" class="demo-chip" (click)="fillDemoUser('superadmin')">👑 Super Admin</button>
+                <button type="button" class="demo-chip" (click)="fillDemoUser('admin')">🛡️ Admin</button>
+                <button type="button" class="demo-chip" (click)="fillDemoUser('customer')">👤 Customer</button>
+              </div>
+
               <label>
                 <span>Email Address *</span>
                 <input 

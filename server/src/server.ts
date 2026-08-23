@@ -50,30 +50,62 @@ app.use('/api/bookings', bookingRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-async function ensureSuperAdmin(): Promise<void> {
+async function ensureDefaultUsers(): Promise<void> {
   try {
-    const email = (process.env.SUPER_ADMIN_EMAIL || 'superadmin@vimahamur.local').toLowerCase().trim();
-    const password = process.env.SUPER_ADMIN_PASSWORD || 'ChangeMe!12345';
-    const existing = await UserModel.findOne({ email });
-    if (!existing) {
-      const passwordHash = await bcrypt.hash(password, 12);
+    const superAdminEmail = (process.env.SUPER_ADMIN_EMAIL || 'superadmin@vimahamur.local').toLowerCase().trim();
+    const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD || 'ChangeMe!12345';
+    
+    // 1. SuperAdmin
+    const existingSuper = await UserModel.findOne({ email: superAdminEmail });
+    if (!existingSuper) {
+      const passwordHash = await bcrypt.hash(superAdminPassword, 12);
       await UserModel.create({
         name: 'ViMahaMur Luxury Properties Super Admin',
-        email,
+        email: superAdminEmail,
         phone: '+91 99999 88888',
         passwordHash,
         role: 'SuperAdmin'
       });
-      console.info(`[AUTH] Auto-created initial SuperAdmin user: ${email}`);
+      console.info(`[AUTH] Auto-created SuperAdmin user: ${superAdminEmail}`);
+    }
+
+    // 2. Standard Admin
+    const adminEmail = 'admin@vimahamur.local';
+    const existingAdmin = await UserModel.findOne({ email: adminEmail });
+    if (!existingAdmin) {
+      const passwordHash = await bcrypt.hash('ChangeMe!12345', 12);
+      await UserModel.create({
+        name: 'ViMahaMur Luxury Properties Admin',
+        email: adminEmail,
+        phone: '+91 99999 77777',
+        passwordHash,
+        role: 'Admin'
+      });
+      console.info(`[AUTH] Auto-created Admin user: ${adminEmail}`);
+    }
+
+    // 3. Customer Account
+    const customerEmail = 'customer@vimahamur.local';
+    const existingCustomer = await UserModel.findOne({ email: customerEmail });
+    if (!existingCustomer) {
+      const passwordHash = await bcrypt.hash('ChangeMe!12345', 12);
+      await UserModel.create({
+        name: 'Aparna Rao',
+        email: customerEmail,
+        phone: '+91 98765 43210',
+        passwordHash,
+        role: 'Customer'
+      });
+      console.info(`[AUTH] Auto-created Customer user: ${customerEmail}`);
     }
   } catch (err) {
-    console.error('[AUTH] Failed to verify/seed initial SuperAdmin:', err);
+    console.error('[AUTH] Failed to verify/seed default users:', err);
   }
 }
 
 mongoose.connect(env.mongoUri)
   .then(async () => {
-    await ensureSuperAdmin();
+    await ensureDefaultUsers();
     app.listen(env.port, '0.0.0.0', () => console.info(`ViMahaMur Luxury Properties API listening on 0.0.0.0:${env.port}`));
   })
   .catch((error: unknown) => {

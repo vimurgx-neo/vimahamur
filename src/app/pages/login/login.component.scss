@@ -431,12 +431,12 @@
   width: 100%;
   overflow: hidden;
   position: relative;
-  max-height: 380px; /* Default height for login form */
+  max-height: 440px; /* Default height for login form with demo helpers */
   transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   margin-bottom: 20px;
   
   &.register-active {
-    max-height: 520px; /* Height for register form (taller) */
+    max-height: 530px; /* Height for register form (taller) */
   }
 }
 
@@ -485,10 +485,10 @@
     gap: 12px;
   }
   .auth-slider-container {
-    max-height: 385px;
+    max-height: 450px;
     
     &.register-active {
-      max-height: 615px; /* Taller on mobile because form columns stack */
+      max-height: 625px; /* Taller on mobile because form columns stack */
     }
   }
 }
