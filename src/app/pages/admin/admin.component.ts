@@ -225,9 +225,16 @@ export class AdminComponent implements OnInit {
         this.formModel.image = compressedDataUrl;
       }
       this.isUploadingMain.set(false);
+      input.value = '';
     } catch {
       this.isUploadingMain.set(false);
+      input.value = '';
     }
+  }
+
+  protected onImgError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80';
   }
 
   protected async onGalleryImagesSelected(event: Event): Promise<void> {
